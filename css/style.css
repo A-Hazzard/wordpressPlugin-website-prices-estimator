@@ -181,3 +181,89 @@
     margin-top: 20px;
 }
 
+select.feature {
+  appearance: none;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  color: #1a202c;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+  transition: all 0.2s;
+  width: 100%;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+}
+
+select.feature:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+.custom-pages {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  width: 100%;
+}
+select.feature option {
+  padding: 10px;
+  background-color: #ffffff;
+  color: #1a202c;
+  font-size: 0.875rem;
+}
+
+select.feature option:hover,
+select.feature option:focus,
+select.feature option:active {
+  background-color: #edf2f7;
+}
+
+select.feature option:checked {
+  background-color: #3182ce;
+  color: #ffffff;
+}
+
+/* For Firefox */
+select.feature option:hover {
+  box-shadow: 0 0 10px 100px #edf2f7 inset;
+}
+
+/* For webkit browsers (Chrome, Safari) */
+select.feature option:hover {
+  background-color: #edf2f7 !important;
+}
+
+.pages-input {
+  appearance: none;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  color: #1a202c;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s;
+  width: 60px;
+}
+
+.pages-input:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+.pages-input::-webkit-inner-spin-button,
+.pages-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.pages-input[type=number] {
+  -moz-appearance: textfield;
+}
