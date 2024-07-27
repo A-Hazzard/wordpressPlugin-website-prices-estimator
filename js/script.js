@@ -295,7 +295,18 @@ jQuery(document).ready(function ($) {
         console.error("Error in document click handler:", error);
       }
     });
+
+     // Event handler for feature checkbox change
+    $(".feature").change(function () {
+      try {
+        const checkedFeatures = $(".feature:checked");
+        $(".calculate").prop("disabled", checkedFeatures.length === 0);
+      } catch (error) {
+        console.error("Error in feature checkbox change handler:", error);
+      }
+    })
   }
+ 
 
   // Initialize package selection
   initializePackageSelection();
