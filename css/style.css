@@ -181,10 +181,3 @@
     margin-top: 20px;
 }
 
-.nextui-form .step-2 .button-wrapper{
-    display: flex;
-    justify-content: center;
-    gap: 3;
-    padding-left:5rem;
-    padding-right:5rem;
-}
