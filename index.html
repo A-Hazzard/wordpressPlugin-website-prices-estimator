@@ -200,8 +200,10 @@
             <label>Additional Web Pages</label>
           </div>
         </div>
-        <button class="previous-step" type="button">Previous</button>
+        <div class="btn-wrapper">
+            <button class="previous-step" type="button">Previous</button>
         <button class="next-step" type="button">Next</button>
+        </div>
       </div>
 
       <!-- Step 3 -->
@@ -266,6 +268,9 @@
       <!-- Summary -->
       <div class="summary-section" style="display: none">
         <button class="previous-step-summary">Previous</button>
+        
+        <div style="margin-top: 1rem; margin-bottom: 1rem;"><b>Total Price:<span id="total-price">$0.00</span></b> </div>
+
         <table>
           <thead>
             <tr>
@@ -278,7 +283,6 @@
           </tbody>
         </table>
         <br/>
-        <div><b>Total Price:</b> <span id="total-price">$0.00</span></div>
       </div>
     </form>
 

@@ -81,7 +81,6 @@ jQuery(document).ready(function ($) {
         summary.append(`
           <tr>
             <td>${feature}</td>
-            <td>${price} ${currency}</td>
           </tr>`);
       });
       totalPrice.text(`${total.toFixed(2)} ${currency}`);
@@ -158,13 +157,25 @@ jQuery(document).ready(function ($) {
         // Update form height
         switch (currentStep) {
           case 1:
-            form.css({ height: "80vh" });
+            if ($(window).width() >= 768) {
+              form.css({ height: "22rem" });
+            } else {
+              form.css({ height: "25rem" });
+            }
             break;
           case 2:
-            form.css({ height: "155vh" });
+            if ($(window).width() >= 768) {
+              form.css({ height: "50rem" });
+            } else {
+              form.css({ height: "55rem" });
+            }
             break;
           case 3:
-            form.css({ height: "80vh" });
+            if ($(window).width() >= 768) {
+              form.css({ height: "30rem" });
+            } else {
+              form.css({ height: "30rem" });
+            }
             break;
         }
         // Update border and box-shadow for the form
@@ -201,13 +212,25 @@ jQuery(document).ready(function ($) {
           // Update form height
           switch (currentStep) {
             case 1:
-              form.css({ height: "80vh" });
+              if ($(window).width() >= 768) {
+                form.css({ height: "22rem" });
+              } else {
+                form.css({ height: "25rem" });
+              }
               break;
             case 2:
-              form.css({ height: "155vh" });
+              if ($(window).width() >= 768) {
+                form.css({ height: "50rem" });
+              } else {
+                form.css({ height: "55rem" });
+              }
               break;
             case 3:
-              form.css({ height: "80vh" });
+              if ($(window).width() >= 768) {
+                form.css({ height: "30rem" });
+              } else {
+                form.css({ height: "30rem" });
+              }
               break;
           }
           // Update border and box-shadow for the form

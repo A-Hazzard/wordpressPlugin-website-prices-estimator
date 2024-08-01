@@ -1,8 +1,3 @@
-
-
-
-
-
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +10,7 @@ form.nextui-form {
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
   padding: 1rem;
   max-width: 90vw;
-  height: 65vh;
+  height: 25rem;
   margin: 1rem auto;
   position: relative;
 }
@@ -72,6 +67,7 @@ form.nextui-form {
 .features-list, .plans {
   display: flex;
   flex-direction: column;
+  margin-top: 1rem;
 }
 
 .feature-item, .plan-item {
@@ -83,10 +79,9 @@ input[type="checkbox"] {
 }
 
 button {
-  margin: 0.75rem;
   padding: 0.75rem 1.5rem;
   border: none;
-  background-color: #3a71ca; /* Primary button color */
+  background-color: #3A71CA; /* Primary button color */
   color: #fff;
   cursor: pointer;
   border-radius: 0.3125rem;
@@ -209,11 +204,11 @@ button:hover {
 }
 
 .hover:hover ~ .calculate::after {
-  content: "Click";
-  top: -150%;
+  content: "READY?";
+  top: 130%;
   transform: translate(-50%, 0);
   font-size: 34px;
-  color: #f19c2b;
+  color: #031fbb;
 }
 
 .calculate {
@@ -223,7 +218,7 @@ button:hover {
   background: transparent;
   font-size: 17px;
   font-weight: 900;
-  border: 3px solid #f39923;
+  border: 3px solid #031fbb;
   border-radius: 12px;
   transition: all 0.3s ease-in-out;
 }
@@ -236,7 +231,7 @@ button:hover {
   transform: translate(-50%, -50%);
   width: 135px;
   height: 47px;
-  background-color: #f5ae51;
+  background-color: #031fbb;
   border-radius: 12px;
   transition: all 0.3s ease-in-out;
   z-index: -1;
@@ -311,6 +306,15 @@ button:hover {
   padding: 1.5rem;
   border: 1px solid #ddd;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+.summary-section .previous-step-summary{
+  margin-left: 0rem;
+}
+
+#total-price{
+  color: green;
 }
 
 table {
@@ -329,4 +333,25 @@ table th {
 }
 
 
+@media(min-width: 768px){
+  form.nextui-form{
+    max-width: 50vw;
+  }
 
+  .step-1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
+  }
+
+ .step-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
+  }
+ .step-2 .next-step {
+    margin: 0 !important;
+  }
+}
