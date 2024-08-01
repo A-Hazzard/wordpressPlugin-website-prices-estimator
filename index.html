@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- Include GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include your custom CSS -->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <form id="wpe-form" class="nextui-form">
+      <div class="currency-switcher">
+        <label for="currency">Select Currency:</label>
+        <select name="currency" id="currency" class="select-currency">
+          <option value="USD">USD</option>
+          <option value="JMD">JMD</option>
+          <option value="CAD">CAD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <option value="DOP">DOP</option>
+          <option value="HTG">HTG</option>
+          <option value="BBD">BBD</option>
+          <option value="BZD">BZD</option>
+          <option value="GYD">GYD</option>
+          <option value="TTD">TTD</option>
+          <option value="AWG">AWG</option>
+          <option value="BMD">BMD</option>
+          <option value="KYD">KYD</option>
+          <option value="ANG">ANG</option>
+          <option value="XCD">XCD</option>
+          <option value="CUP">CUP</option>
+          <option value="CUC">CUC</option>
+        </select>
+      </div>
+      <!-- Step 1 -->
+      <div class="step step-1">
+        <h2>Step 1: Number of Pages</h2>
+        <label style="margin-top: 1rem" for="number-of-pages"
+          >How many pages do you envision for your website?</label
+        >
+        <input
+          type="text"
+          id="number-of-pages"
+          placeholder="Enter number of pages"
+          class="number-input"
+        />
+        <button class="next-step" type="button">Next</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step step-2">
+        <h2>Step 2: Select Functionalities</h2>
+        <div class="features-list">
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="34"
+              data-feature="Contact Form"
+            />
+            <label>Contact Form</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="46"
+              data-feature="Image Slider"
+            />
+            <label>Image Slider</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="17"
+              data-feature="Social Media Integration"
+            />
+            <label>Social Media Integration</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="344"
+              data-feature="E-commerce Functionality"
+            />
+            <label>E-commerce Functionality</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="172"
+              data-feature="Content Management System (CMS)"
+            />
+            <label>Content Management System (CMS)</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="69"
+              data-feature="Search Functionality"
+            />
+            <label>Search Functionality</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="103"
+              data-feature="Blog/News Section"
+            />
+            <label>Blog/News Section</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="92"
+              data-feature="User Registration/Login"
+            />
+            <label>User Registration/Login</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="34"
+              data-feature="Newsletter Subscription"
+            />
+            <label>Newsletter Subscription</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="92"
+              data-feature="Mobile Responsiveness"
+            />
+            <label>Mobile Responsiveness</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="69"
+              data-feature="SEO Optimization"
+            />
+            <label>SEO Optimization</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="34"
+              data-feature="Analytics Integration (Google Analytics)"
+            />
+            <label>Analytics Integration (Google Analytics)</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="69"
+              data-feature="Security Features (SSL Certificate, Firewall)"
+            />
+            <label>Security Features (SSL Certificate, Firewall)</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="115"
+              data-feature="Integration with third-party APIs"
+            />
+            <label>Integration with third-party APIs</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="745"
+              data-feature="Any custom functionality"
+            />
+            <label>Any custom functionality</label>
+          </div>
+          <div class="feature-item">
+            <input
+              type="checkbox"
+              class="feature"
+              data-usd="50"
+              data-feature="Additional Web Pages"
+            />
+            <label>Additional Web Pages</label>
+          </div>
+        </div>
+        <button class="previous-step" type="button">Previous</button>
+        <button class="next-step" type="button">Next</button>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step step-3">
+        <h2>Step 3: Hosting & Maintenance Plans</h2>
+        <div class="plans">
+          <div class="plan-item">
+            <input
+              type="checkbox"
+              class="package-input"
+              data-usd="45"
+              data-feature="Web Hosting and Cybersecurity Solutions"
+            />
+            <label
+              >Web Hosting and Cybersecurity Solutions: Starting from $45</label
+            >
+          </div>
+          <div class="plan-item">
+            <input
+              type="checkbox"
+              class="package-input"
+              data-usd="130"
+              data-feature="3 Hour SLA"
+            />
+            <label>Website Maintenance Package: 3 Hour SLA - $130/month</label>
+          </div>
+          <div class="plan-item">
+            <input
+              type="checkbox"
+              class="package-input"
+              data-usd="220"
+              data-feature="5 Hour SLA"
+            />
+            <label>Website Maintenance Package: 5 Hour SLA - $220/month</label>
+          </div>
+          <div class="plan-item">
+            <input
+              type="checkbox"
+              class="package-input"
+              data-usd="315"
+              data-feature="8 Hour SLA"
+            />
+            <label>Website Maintenance Package: 8 Hour SLA - $315/month</label>
+          </div>
+        </div>
+
+        <div class="btn-wrapper">
+          <button class="previous-step" type="button">Previous</button>
+
+          <div class="calculate-container-button">
+            <div class="hover bt-1"></div>
+            <div class="hover bt-2"></div>
+            <div class="hover bt-3"></div>
+            <div class="hover bt-4"></div>
+            <div class="hover bt-5"></div>
+            <div class="hover bt-6"></div>
+            <button class="calculate" type="button"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="summary-section" style="display: none">
+        <button class="previous-step-summary">Previous</button>
+        <table>
+          <thead>
+            <tr>
+              <th>Selected Feature/Package</th>
+              <!-- <th>Price</th> -->
+            </tr>
+          </thead>
+          <tbody id="summary-content">
+            <!-- Summary content will be populated here -->
+          </tbody>
+        </table>
+        <br/>
+        <div><b>Total Price:</b> <span id="total-price">$0.00</span></div>
+      </div>
+    </form>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

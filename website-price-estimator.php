@@ -58,7 +58,7 @@ if (!class_exists('WebsitePriceEstimator')) {
 
         public function enqueue_scripts()
         {
-            wp_enqueue_style('priceEstimatorStyle', plugins_url('/css/style.css', __FILE__));
+            wp_enqueue_style('priceEstimatorStyle', plugins_url('/css/styles.css', __FILE__));
             wp_enqueue_script('priceEstimatorScript', plugins_url('/js/script.js', __FILE__), array('jquery'), null, true);
         }
 

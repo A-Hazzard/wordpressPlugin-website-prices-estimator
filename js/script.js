@@ -1,5 +1,15 @@
 jQuery(document).ready(function ($) {
   let currency = "USD"; // Default currency
+  let currentStep = 1;
+  const summarySection = $(".summary-section");
+  const form = $("form.nextui-form");
+
+  const steps = {
+    1: $(".step-1"),
+    2: $(".step-2"),
+    3: $(".step-3"),
+  };
+
   const exchangeRates = {
     USD: 1,
     JMD: 150.85,
@@ -22,19 +32,6 @@ jQuery(document).ready(function ($) {
     CUC: 1,
   };
 
-  function initializePackageSelection() {
-    const packageMenuItems = $(".package .dropdown-content .menu-item");
-    const packageCheckboxes = $(".package-input-wrapper input.feature");
-
-    packageMenuItems.each((index, item) => {
-      $(item).on("click", () => {
-        $(packageCheckboxes[index]).data("usd", $(item).data("price"));
-        $(packageCheckboxes[index]).prop("disabled", false);
-        $(packageCheckboxes[index]).prop("checked", true);
-      });
-    });
-  }
-
   function convertCurrency(amount, toCurrency) {
     try {
       if (!exchangeRates[toCurrency]) {
@@ -49,20 +46,48 @@ jQuery(document).ready(function ($) {
 
   function updatePrices() {
     try {
-      $(".feature-table tbody tr").each(function () {
-        const usdPrice = $(this).find("input.feature").data("usd");
-        if (typeof usdPrice === "undefined") {
-          throw new Error("USD price not found");
-        }
+      $(".feature-item input").each(function () {
+        const usdPrice = $(this).data("usd");
         const convertedPrice = convertCurrency(usdPrice, currency);
-        const priceCol = $(this).find(".price-col");
-        if (priceCol.length === 0) {
-          throw new Error("Price column not found");
-        }
-        priceCol.text(`${convertedPrice}`);
+        $(this)
+          .closest(".feature-item")
+          .find("label")
+          .text(`${convertedPrice} ${currency}`);
       });
+
+      $(".plan-item input").each(function () {
+        const usdPrice = $(this).data("usd");
+        const convertedPrice = convertCurrency(usdPrice, currency);
+        $(this)
+          .closest(".plan-item")
+          .find("label")
+          .text(`${convertedPrice} ${currency}`);
+      });
+
+      updateSummary();
     } catch (error) {
       console.error("Error in updatePrices:", error);
+    }
+  }
+
+  function updateSummary() {
+    try {
+      const { total, summaryItems } = calculateTotal();
+      const summary = $("#summary-content");
+      const totalPrice = $("#total-price");
+
+      summary.empty();
+      summaryItems.forEach(({ feature, price }) => {
+        summary.append(`
+          <tr>
+            <td>${feature}</td>
+            <td>${price} ${currency}</td>
+          </tr>`);
+      });
+      totalPrice.text(`${total.toFixed(2)} ${currency}`);
+      summarySection.removeClass("hidden");
+    } catch (error) {
+      console.error("Error in updateSummary:", error);
     }
   }
 
@@ -74,16 +99,12 @@ jQuery(document).ready(function ($) {
       $(".feature:checked").each(function () {
         const feature = $(this).data("feature");
         let price = $(this).data("usd");
-
         if (typeof feature === "undefined" || typeof price === "undefined") {
           throw new Error("Feature or price data not found");
         }
 
         if (feature === "Global Implementation") {
           const pagesInput = $(this).closest("tr").find(".pages-input");
-          if (pagesInput.length === 0) {
-            throw new Error("Pages input not found");
-          }
           const pages = parseInt(pagesInput.val()) || 9;
           price = 400 + (pages - 8) * 50;
         }
@@ -93,6 +114,23 @@ jQuery(document).ready(function ($) {
         summaryItems.push({ feature, price });
       });
 
+      $(".package-input:checked").each(function () {
+        const feature = $(this).data("feature");
+        const price = $(this).data("usd");
+        if (typeof feature === "undefined" || typeof price === "undefined") {
+          throw new Error("Feature or price data not found");
+        }
+
+        summaryItems.push({
+          feature,
+          price: currency === "USD" ? price : convertCurrency(price, currency),
+        });
+        total +=
+          currency === "USD"
+            ? parseFloat(price)
+            : parseFloat(convertCurrency(price, currency));
+      });
+
       return { total, summaryItems };
     } catch (error) {
       console.error("Error in calculateTotal:", error);
@@ -100,217 +138,212 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  function updateSummary() {
-    try {
-      const { total, summaryItems } = calculateTotal();
-      const summary = $("#summary");
-      const totalPrice = $("#total-price");
+  function showStep(stepNumber) {
+    if (stepNumber < 1 || stepNumber > Object.keys(steps).length) return;
 
-      if (summary.length === 0 || totalPrice.length === 0) {
-        throw new Error("Summary or total price element not found");
-      }
+    // Animate current step out
+    gsap.to(steps[currentStep], {
+      x: "-100%",
+      opacity: 0,
+      duration: 0.5,
+      onComplete: function () {
+        steps[currentStep].hide();
+        // Animate new step in
+        steps[stepNumber].show().css({ x: "100%", opacity: 0 });
+        gsap.fromTo(
+          steps[stepNumber],
+          { x: "100%", opacity: 0 },
+          { x: "0%", opacity: 1, duration: 0.5 }
+        );
+        // Update form height
+        switch (currentStep) {
+          case 1:
+            form.css({ height: "80vh" });
+            break;
+          case 2:
+            form.css({ height: "155vh" });
+            break;
+          case 3:
+            form.css({ height: "80vh" });
+            break;
+        }
+        // Update border and box-shadow for the form
+        form.css({
+          border: stepNumber === 4 ? "none" : "1px solid #ddd",
+          boxShadow:
+            stepNumber === 4 ? "none" : "0 0 0.5rem rgba(0, 0, 0, 0.1)",
+        });
+      },
+    });
 
-      summary.empty();
-      summaryItems.forEach(({ feature, price }) => {
-        summary.append(`
-          <tr>
-            <td>${feature}</td>
-            <!-- <td>${price} ${currency}</td> Added Incase User wants to see the individual price-->
-          </tr>`);
-      });
-      totalPrice.text(`${total.toFixed(2)} ${currency}`);
-      $(".summary-section").removeClass("hidden");
-    } catch (error) {
-      console.error("Error in updateSummary:", error);
+    currentStep = stepNumber;
+  }
+
+  function showPreviousStep() {
+    // Animate the current step out
+    gsap.to(steps[currentStep], {
+      x: "100%",
+      opacity: 0,
+      duration: 0.5,
+      onComplete: function () {
+        steps[currentStep].hide();
+
+        // Animate the previous step in
+        const previousStepNumber = currentStep - 1;
+        if (previousStepNumber >= 1) {
+          steps[previousStepNumber].show().css({ x: "-100%", opacity: 0 });
+          gsap.fromTo(
+            steps[previousStepNumber],
+            { x: "-100%", opacity: 0 },
+            { x: "0%", opacity: 1, duration: 0.5 }
+          );
+          currentStep = previousStepNumber;
+          // Update form height
+          switch (currentStep) {
+            case 1:
+              form.css({ height: "80vh" });
+              break;
+            case 2:
+              form.css({ height: "155vh" });
+              break;
+            case 3:
+              form.css({ height: "80vh" });
+              break;
+          }
+          // Update border and box-shadow for the form
+          form.css({
+            border: currentStep === 4 ? "none" : "1px solid #ddd",
+            boxShadow:
+              currentStep === 4 ? "none" : "0 0 0.5rem rgba(0, 0, 0, 0.1)",
+          });
+        }
+      },
+    });
+  }
+
+  function showSummary() {
+    // Hide the current step
+    gsap.to(steps[currentStep], {
+      x: "-100%",
+      opacity: 0,
+      duration: 0.5,
+      onComplete: function () {
+        steps[currentStep].hide();
+
+        // Show the summary section and animate it in
+        summarySection.show().css({ x: "100%", opacity: 0 });
+        gsap.fromTo(
+          summarySection,
+          { x: "100%", opacity: 0 },
+          { x: "0%", opacity: 1, duration: 0.5 }
+        );
+
+        // Remove border and box-shadow for the form
+        form.css({
+          border: "none",
+          boxShadow: "none",
+        });
+      },
+    });
+  }
+
+  function showPreviousSummary() {
+    // Hide summary and show previous step
+    gsap.to(summarySection, {
+      x: "100%",
+      opacity: 0,
+      duration: 0.5,
+      onComplete: function () {
+        summarySection.hide();
+        showPreviousStep();
+      },
+    });
+  }
+
+  $(".next-step").click(function (event) {
+    event.preventDefault();
+    if (currentStep < Object.keys(steps).length) {
+      showStep(currentStep + 1);
     }
-  }
+  });
 
-  function updateGlobalImplementationPrice($input) {
-    try {
-      let pages = parseInt($input.val());
-      let price = 400 + (pages - 8) * 50;
-      let $checkbox = $input.closest("tr").find(".feature");
-
-      if ($checkbox.length === 0) {
-        throw new Error("Feature checkbox not found");
-      }
-
-      $checkbox.data("usd", price);
-
-      if ($checkbox.is(":checked")) {
-        updateSummary();
-      }
-    } catch (error) {
-      console.error("Error in updateGlobalImplementationPrice:", error);
+  $(".previous-step").click(function (event) {
+    event.preventDefault();
+    if (currentStep > 1) {
+      showPreviousStep();
     }
-  }
+  });
 
-  function attachEventHandlers() {
-    // Event handler for calculate button click
-    $(".calculate").click(function () {
-      try {
-        updateSummary();
-      } catch (error) {
-        console.error("Error in calculate click handler:", error);
-      }
+  $(".calculate-container-button").click(function (event) {
+      event.preventDefault();
+      console.log('clicked')
+    let numberOfPages = parseInt($("#number-of-pages").val(), 10);
+    let featuresPrice = 0;
+    let packagesPrice = 0;
+    let totalPrice = 0;
+
+    if (isNaN(numberOfPages) || numberOfPages <= 0) {
+      alert("Please enter a valid number of pages.");
+      return;
+    }
+
+    // Calculate the total price based on selected features
+    $(".feature:checked").each(function () {
+      featuresPrice += parseFloat($(this).data("usd"));
     });
 
-    // Event handler for currency selection change
-    $('select[name="currency"]').change(function () {
-      try {
-        currency = $(this).val();
-        updatePrices();
-        updateSummary();
-      } catch (error) {
-        console.error("Error in currency change handler:", error);
-      }
+    // Calculate the total price based on selected packages
+    $(".package-input:checked").each(function () {
+      packagesPrice += parseFloat($(this).data("usd"));
     });
 
-    // Event handler for next step button click
-    $(".next-step").click(function () {
-      try {
-        $(this)
-          .closest(".step")
-          .addClass("hidden")
-          .next(".step")
-          .removeClass("hidden");
-      } catch (error) {
-        console.error("Error in next-step click handler:", error);
-      }
+    // Calculate total based on number of pages and selected features
+    totalPrice = featuresPrice + packagesPrice;
+    let summaryContent = "";
+
+    // Add features to the summary
+    $(".feature:checked").each(function () {
+      let featureName = $(this).data("feature");
+      let featurePrice = $(this).data("usd");
+      summaryContent += `
+        <tr>
+          <td>${featureName}</td>
+         <!-- <td>${featurePrice.toFixed(2)}</td> -->
+        </tr>`;
     });
 
-    // Event handler for previous step button click
-    $(".previous-step").click(function () {
-      try {
-        $(this)
-          .closest(".step")
-          .addClass("hidden")
-          .prev(".step")
-          .removeClass("hidden");
-      } catch (error) {
-        console.error("Error in previous-step click handler:", error);
-      }
+    // Add packages to the summary
+    $(".package-input:checked").each(function () {
+      let packageName = $(this).data("feature");
+      let packagePrice = $(this).data("usd");
+      summaryContent += `
+        <tr>
+          <td>${packageName}</td>
+         <!-- <td>${packagePrice.toFixed(2)}</td> -->
+        </tr>`;
     });
 
-    // Event handler for pages label click
-    $(".pages-label").on("click", function () {
-      try {
-        $(this).addClass("hidden");
-        const pagesInput = $(this).closest("tr").find(".pages-input");
-        if (pagesInput.length === 0) {
-          throw new Error("Pages input not found");
-        }
-        pagesInput.removeClass("hidden").focus();
-      } catch (error) {
-        console.error("Error in pages-label click handler:", error);
-      }
-    });
+    // Display total price and summary
+    $("#summary-content").html(summaryContent);
+    $("#total-price").text(`${totalPrice.toFixed(2)}`);
 
-    // Event handler for pages input change
-    $(".pages-input").on("input", function () {
-      try {
-        let pages = parseInt($(this).val()) || 9;
-        let price = 400 + (pages - 8) * 50;
-        let checkbox = $(this).closest("tr").find(".feature");
+    showSummary();
+  });
+  
 
-        if (checkbox.length === 0) {
-          throw new Error("Feature checkbox not found");
-        }
+  $(".previous-step-summary").click(function (event) {
+    event.preventDefault();
+    showPreviousSummary();
+  });
 
-        checkbox.data("usd", price);
-
-        if (checkbox.is(":checked")) {
-          updateSummary();
-        }
-      } catch (error) {
-        console.error("Error in pages-input input handler:", error);
-      }
-    });
-
-    // Event handler for pages input blur
-    $(".pages-input").on("blur", function () {
-      try {
-        let pages = parseInt($(this).val());
-        if (isNaN(pages) || pages < 9) {
-          $(this).val(9);
-        }
-        updateGlobalImplementationPrice($(this));
-      } catch (error) {
-        console.error("Error in pages-input blur handler:", error);
-      }
-    });
-
-    // Event handler for package menu item click
-    $(".package .dropdown-content .menu-item").click(function () {
-      try {
-        const price = $(this).data("price");
-        const feature = $(this).text();
-
-        if (typeof price === "undefined" || typeof feature === "undefined") {
-          throw new Error("Price or feature data not found");
-        }
-
-        $(".package .dropdown-content").css("display", "none !important");
-        $(".package .menu-item").removeClass("selected");
-        $(this).addClass("selected");
-
-        const packageInput = $(".package-input-wrapper input.feature");
-        if (packageInput.length === 0) {
-          throw new Error("Package input not found");
-        }
-
-        packageInput.data("usd", price);
-        packageInput.data("feature", feature);
-        console.log("USD price set:", packageInput.data("usd"));
-        console.log("Feature set:", packageInput.data("feature"));
-
-        const convertedPrice = convertCurrency(price, currency);
-        const priceCol = $(".package .price-col");
-        if (priceCol.length === 0) {
-          throw new Error("Price column not found");
-        }
-        priceCol.text(`${convertedPrice} ${currency}`);
-
-        updateSummary();
-      } catch (error) {
-        console.error("Error in package menu-item click handler:", error);
-      }
-    });
-
-    // Event handler for package section click
-    $(".package").click(function (e) {
-      try {
-        e.stopPropagation();
-        $(".package .dropdown-content").toggle();
-      } catch (error) {
-        console.error("Error in package click handler:", error);
-      }
-    });
-
-    // Event handler for document click to hide package dropdown
-    $(document).click(function () {
-      try {
-        $(".package .dropdown-content").hide();
-      } catch (error) {
-        console.error("Error in document click handler:", error);
-      }
-    });
-
-     // Event handler for feature checkbox change
-    $(".feature").change(function () {
-      try {
-        const checkedFeatures = $(".feature:checked");
-        $(".calculate").prop("disabled", checkedFeatures.length === 0);
-      } catch (error) {
-        console.error("Error in feature checkbox change handler:", error);
-      }
-    })
-  }
- 
-
-  // Initialize package selection
-  initializePackageSelection();
-
-  // Attach event handlers
-  attachEventHandlers();
+  // Event handler for currency selection change
+  $('select[name="currency"]').change(function () {
+    try {
+      currency = $(this).val();
+      updatePrices();
+      updateSummary();
+    } catch (error) {
+      console.error("Error in currency change handler:", error);
+    }
+  });
 });
