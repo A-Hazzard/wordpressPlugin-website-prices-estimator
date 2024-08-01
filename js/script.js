@@ -70,43 +70,24 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  function updateSummary() {
-    try {
-      const { total, summaryItems } = calculateTotal();
-      const summary = $("#summary-content");
-      const totalPrice = $("#total-price");
-
-      summary.empty();
-      summaryItems.forEach(({ feature, price }) => {
-        summary.append(`
-          <tr>
-            <td>${feature}</td>
-          </tr>`);
-      });
-      totalPrice.text(`${total.toFixed(2)} ${currency}`);
-      summarySection.removeClass("hidden");
-    } catch (error) {
-      console.error("Error in updateSummary:", error);
-    }
-  }
+  
 
   function calculateTotal() {
     try {
       let total = 0;
       let summaryItems = [];
+      let numberOfPages = parseInt($("#number-of-pages").val(), 10);
 
       $(".feature:checked").each(function () {
         const feature = $(this).data("feature");
-        let price = $(this).data("usd");
-        if (typeof feature === "undefined" || typeof price === "undefined") {
-          throw new Error("Feature or price data not found");
+        let price = parseFloat($(this).data("usd"));
+
+        // Calculate the price based on the number of pages
+        console.log(numberOfPages, 'is number of pages')
+        if (numberOfPages > 8) {
+          price += (numberOfPages - 8) * 50;
         }
 
-        if (feature === "Global Implementation") {
-          const pagesInput = $(this).closest("tr").find(".pages-input");
-          const pages = parseInt(pagesInput.val()) || 9;
-          price = 400 + (pages - 8) * 50;
-        }
 
         price = currency === "USD" ? price : convertCurrency(price, currency);
         total += parseFloat(price);
@@ -115,19 +96,17 @@ jQuery(document).ready(function ($) {
 
       $(".package-input:checked").each(function () {
         const feature = $(this).data("feature");
-        const price = $(this).data("usd");
-        if (typeof feature === "undefined" || typeof price === "undefined") {
-          throw new Error("Feature or price data not found");
-        }
+        let price = parseFloat($(this).data("usd"));
 
-        summaryItems.push({
-          feature,
-          price: currency === "USD" ? price : convertCurrency(price, currency),
-        });
-        total +=
-          currency === "USD"
-            ? parseFloat(price)
-            : parseFloat(convertCurrency(price, currency));
+        // Calculate the price based on the number of pages
+        if (numberOfPages > 8) {
+          price += (numberOfPages - 8) * 50;
+        }
+        console.log(numberOfPages, "is number of pages");
+
+        price = currency === "USD" ? price : convertCurrency(price, currency);
+        total += parseFloat(price);
+        summaryItems.push({ feature, price });
       });
 
       return { total, summaryItems };
@@ -253,6 +232,20 @@ jQuery(document).ready(function ($) {
       onComplete: function () {
         steps[currentStep].hide();
 
+        // Calculate the total price and update the summary
+        const { total, summaryItems } = calculateTotal();
+        const summary = $("#summary-content");
+        const totalPrice = $("#total-price");
+
+        summary.empty();
+        summaryItems.forEach(({ feature, price }) => {
+          summary.append(`
+          <tr>
+            <td>${feature}</td>
+          </tr>`);
+        });
+        totalPrice.text(`${total.toFixed(2)} ${currency}`);
+
         // Show the summary section and animate it in
         summarySection.show().css({ x: "100%", opacity: 0 });
         gsap.fromTo(
@@ -269,6 +262,7 @@ jQuery(document).ready(function ($) {
       },
     });
   }
+
 
   function showPreviousSummary() {
     // Hide summary and show previous step
