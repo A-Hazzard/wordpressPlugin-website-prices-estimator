@@ -144,9 +144,9 @@ jQuery(document).ready(function ($) {
             break;
           case 2:
             if ($(window).width() >= 768) {
-              form.css({ height: "50rem" });
+              form.css({ height: "62rem" });
             } else {
-              form.css({ height: "55rem" });
+              form.css({ height: "65rem" });
             }
             break;
           case 3:
@@ -198,11 +198,11 @@ jQuery(document).ready(function ($) {
               }
               break;
             case 2:
-              if ($(window).width() >= 768) {
-                form.css({ height: "50rem" });
-              } else {
-                form.css({ height: "55rem" });
-              }
+               if ($(window).width() >= 768) {
+                 form.css({ height: "62rem" });
+               } else {
+                 form.css({ height: "65rem" });
+               }
               break;
             case 3:
               if ($(window).width() >= 768) {
