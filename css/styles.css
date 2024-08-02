@@ -13,6 +13,7 @@ form.nextui-form {
   height: 25rem;
   margin: 1rem auto;
   position: relative;
+  z-index: 5;
 }
 
 /* Form Step Styles */
@@ -23,6 +24,8 @@ form.nextui-form {
   display: none; /* Hide all steps by default */
   box-sizing: border-box;
   margin-top: 1rem;
+  z-index: 5;
+
 }
 
 
@@ -34,6 +37,8 @@ form.nextui-form {
   font-size: 1rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  z-index: 5;
+
 }
 
 /* Button styles */
@@ -46,6 +51,8 @@ form.nextui-form {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
+  z-index: 5;
+
 }
 
 .step .next-step:hover {
@@ -58,6 +65,8 @@ form.nextui-form {
   align-items: flex-start;
   width: 90%;
 }
+
+.step-2{display: none;}
 
 .step-1 .next-step {
   width: 50%;
@@ -253,7 +262,7 @@ button:hover {
   border: none;
   border-radius: 12px;
   transition: all 0.3s ease-in-out;
-  z-index: 2;
+  z-index: 5;
 }
 
 @keyframes shake {
@@ -347,9 +356,6 @@ table th {
   }
 
  .step-2 {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     width: 90%;
   }
  .step-2 .next-step {
