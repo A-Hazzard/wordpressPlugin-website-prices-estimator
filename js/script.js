@@ -46,7 +46,7 @@ jQuery(document).ready(function ($) {
 
   function updatePrices() {
     try {
-      $(".feature-item input").each(function () {
+      $(".feature:checked").each(function () {
         const usdPrice = $(this).data("usd");
         const convertedPrice = convertCurrency(usdPrice, currency);
         $(this)
@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
           .text(`${convertedPrice} ${currency}`);
       });
 
-      $(".plan-item input").each(function () {
+      $(".package-input:checked").each(function () {
         const usdPrice = $(this).data("usd");
         const convertedPrice = convertCurrency(usdPrice, currency);
         $(this)
@@ -69,6 +69,28 @@ jQuery(document).ready(function ($) {
       console.error("Error in updatePrices:", error);
     }
   }
+
+  function updateSummary() {
+    try {
+      const { total, summaryItems } = calculateTotal();
+      const summary = $("#summary-content");
+      const totalPrice = $("#total-price");
+
+      summary.empty();
+      summaryItems.forEach(({ feature }) => {
+        summary.append(`
+                <tr>
+                    <td>${feature}</td>
+                </tr>`);
+      });
+      totalPrice.text(`${total.toFixed(2)} ${currency}`);
+
+      summarySection.removeClass("hidden");
+    } catch (error) {
+      console.error("Error in updateSummary:", error);
+    }
+  }
+
 
   
 
@@ -177,7 +199,6 @@ jQuery(document).ready(function ($) {
       duration: 0.5,
       onComplete: function () {
         steps[currentStep].hide();
-
         // Animate the previous step in
         const previousStepNumber = currentStep - 1;
         if (previousStepNumber >= 1) {
@@ -272,7 +293,7 @@ jQuery(document).ready(function ($) {
       duration: 0.5,
       onComplete: function () {
         summarySection.hide();
-        showPreviousStep();
+        showStep(3); // Show step 3 directly
       },
     });
   }
@@ -358,9 +379,10 @@ jQuery(document).ready(function ($) {
     try {
       currency = $(this).val();
       updatePrices();
-      updateSummary();
+      updateSummary(); // Ensure this function recalculates and updates the summary
     } catch (error) {
       console.error("Error in currency change handler:", error);
     }
   });
+
 });
