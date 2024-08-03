@@ -3,7 +3,10 @@ jQuery(document).ready(function ($) {
   let currentStep = 1;
   const summarySection = $(".summary-section");
   const form = $("form.nextui-form");
-
+  // Check for "active" class globally and set form height to 20rem
+  if ($(".step.active").length > 0) {
+    $(".nextui-form").height(320); // 20rem = 320px
+  }
   const steps = {
     1: $(".step-1"),
     2: $(".step-2"),
@@ -91,9 +94,6 @@ jQuery(document).ready(function ($) {
     }
   }
 
-
-  
-
   function calculateTotal() {
     try {
       let total = 0;
@@ -105,11 +105,10 @@ jQuery(document).ready(function ($) {
         let price = parseFloat($(this).data("usd"));
 
         // Calculate the price based on the number of pages
-        console.log(numberOfPages, 'is number of pages')
+        console.log(numberOfPages, "is number of pages");
         if (numberOfPages > 8) {
           price += (numberOfPages - 8) * 50;
         }
-
 
         price = currency === "USD" ? price : convertCurrency(price, currency);
         total += parseFloat(price);
@@ -140,109 +139,98 @@ jQuery(document).ready(function ($) {
 
   function showStep(stepNumber) {
     if (stepNumber < 1 || stepNumber > Object.keys(steps).length) return;
-
+    // Remove active class from step-1 when hiding the containers
+    if (currentStep === 1) {
+      $(".step-1").removeClass("active");
+    }
     // Animate current step out
     gsap.to(steps[currentStep], {
       x: "-100%",
       opacity: 0,
       duration: 0.5,
       onComplete: function () {
-        steps[currentStep].hide();
+        steps[currentStep].hide(); // Hide the current step
+        steps[currentStep].css({ position: "relative" });
         // Animate new step in
-        steps[stepNumber].show().css({ x: "100%", opacity: 0 });
+        steps[stepNumber]
+          .show()
+          .css({ x: "100%", opacity: 0, display: "block" });
         gsap.fromTo(
           steps[stepNumber],
           { x: "100%", opacity: 0 },
-          { x: "0%", opacity: 1, duration: 0.5 }
+          {
+            x: "0%",
+            opacity: 1,
+            duration: 0.5,
+            onComplete: function () {
+              steps[currentStep].css({ position: "" }); // Remove position relative from the previous step
+              updateContainerHeight();
+            },
+          }
         );
-        // Update form height
-        switch (currentStep) {
-          case 1:
-            if ($(window).width() >= 768) {
-              form.css({ height: "22rem" });
-            } else {
-              form.css({ height: "25rem" });
-            }
-            break;
-          case 2:
-            if ($(window).width() >= 768) {
-              form.css({ height: "62rem" });
-            } else {
-              form.css({ height: "65rem" });
-            }
-            break;
-          case 3:
-            if ($(window).width() >= 768) {
-              form.css({ height: "30rem" });
-            } else {
-              form.css({ height: "30rem" });
-            }
-            break;
-        }
-        // Update border and box-shadow for the form
-        form.css({
-          border: stepNumber === 4 ? "none" : "1px solid #ddd",
-          boxShadow:
-            stepNumber === 4 ? "none" : "0 0 0.5rem rgba(0, 0, 0, 0.1)",
-        });
       },
     });
-
+    // Restore active class to step-1 if user goes back to step-1
+    if (stepNumber === 1) {
+      $(".step-1").addClass("active");
+    }
     currentStep = stepNumber;
   }
 
   function showPreviousStep() {
-    // Animate the current step out
+    const previousStepNumber = currentStep - 1;
+    if (previousStepNumber < 1) return;
+
+    // Animate current step out
     gsap.to(steps[currentStep], {
       x: "100%",
       opacity: 0,
       duration: 0.5,
       onComplete: function () {
-        steps[currentStep].hide();
-        // Animate the previous step in
-        const previousStepNumber = currentStep - 1;
-        if (previousStepNumber >= 1) {
-          steps[previousStepNumber].show().css({ x: "-100%", opacity: 0 });
-          gsap.fromTo(
-            steps[previousStepNumber],
-            { x: "-100%", opacity: 0 },
-            { x: "0%", opacity: 1, duration: 0.5 }
-          );
-          currentStep = previousStepNumber;
-          // Update form height
-          switch (currentStep) {
-            case 1:
-              if ($(window).width() >= 768) {
-                form.css({ height: "22rem" });
-              } else {
-                form.css({ height: "25rem" });
-              }
-              break;
-            case 2:
-               if ($(window).width() >= 768) {
-                 form.css({ height: "62rem" });
-               } else {
-                 form.css({ height: "65rem" });
-               }
-              break;
-            case 3:
-              if ($(window).width() >= 768) {
-                form.css({ height: "30rem" });
-              } else {
-                form.css({ height: "30rem" });
-              }
-              break;
+        steps[currentStep].hide(); // Hide the current step
+        steps[currentStep].css({ position: "relative" });
+        // Animate previous step in
+        steps[previousStepNumber]
+          .show()
+          .css({ x: "-100%", opacity: 0, display: "block" });
+        gsap.fromTo(
+          steps[previousStepNumber],
+          { x: "-100%", opacity: 0 },
+          {
+            x: "0%",
+            opacity: 1,
+            duration: 0.5,
+            onComplete: function () {
+              steps[currentStep].css({ position: "" }); // Remove position relative from the current step
+              updateContainerHeight();
+            },
           }
-          // Update border and box-shadow for the form
-          form.css({
-            border: currentStep === 4 ? "none" : "1px solid #ddd",
-            boxShadow:
-              currentStep === 4 ? "none" : "0 0 0.5rem rgba(0, 0, 0, 0.1)",
-          });
-        }
+        );
       },
     });
+
+    currentStep = previousStepNumber;
   }
+
+  function updateContainerHeight() {
+    var currentStepHeight = steps[currentStep].outerHeight(true) + 120;
+    var currentFormHeight = $(".nextui-form").height();
+
+    // Animate the height change along with the sliding animation
+    $(".nextui-form").animate(
+      { height: currentStepHeight },
+      {
+        duration: 500, // Adjust the duration as needed
+        step: function () {
+          // Trigger layout reflow to ensure smooth animation
+          $(".nextui-form").css("display", "block");
+        },
+      }
+    );
+  }
+
+
+
 
   function showSummary() {
     // Hide the current step
@@ -251,7 +239,7 @@ jQuery(document).ready(function ($) {
       opacity: 0,
       duration: 0.5,
       onComplete: function () {
-        steps[currentStep].hide();
+        steps[currentStep].hide().css("display", "none");
 
         // Calculate the total price and update the summary
         const { total, summaryItems } = calculateTotal();
@@ -268,7 +256,8 @@ jQuery(document).ready(function ($) {
         totalPrice.text(`${total.toFixed(2)} ${currency}`);
 
         // Show the summary section and animate it in
-        summarySection.show().css({ x: "100%", opacity: 0 });
+
+        summarySection.show().css({ x: "100%", opacity: 0, display: "block" });
         gsap.fromTo(
           summarySection,
           { x: "100%", opacity: 0 },
@@ -284,7 +273,6 @@ jQuery(document).ready(function ($) {
     });
   }
 
-
   function showPreviousSummary() {
     // Hide summary and show previous step
     gsap.to(summarySection, {
@@ -292,7 +280,7 @@ jQuery(document).ready(function ($) {
       opacity: 0,
       duration: 0.5,
       onComplete: function () {
-        summarySection.hide();
+        summarySection.hide().css("display", "none");
         showStep(3); // Show step 3 directly
       },
     });
@@ -313,8 +301,8 @@ jQuery(document).ready(function ($) {
   });
 
   $(".calculate-container-button").click(function (event) {
-      event.preventDefault();
-      console.log('clicked')
+    event.preventDefault();
+    console.log("clicked");
     let numberOfPages = parseInt($("#number-of-pages").val(), 10);
     let featuresPrice = 0;
     let packagesPrice = 0;
@@ -367,7 +355,6 @@ jQuery(document).ready(function ($) {
 
     showSummary();
   });
-  
 
   $(".previous-step-summary").click(function (event) {
     event.preventDefault();
@@ -384,5 +371,4 @@ jQuery(document).ready(function ($) {
       console.error("Error in currency change handler:", error);
     }
   });
-
 });
