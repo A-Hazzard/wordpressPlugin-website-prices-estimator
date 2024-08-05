@@ -10,7 +10,7 @@ form.nextui-form {
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
   padding: 1rem;
   max-width: 90vw;
-  height: auto;
+  height: 25rem;
   margin: 1rem auto;
   position: relative;
   z-index: 5;

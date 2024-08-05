@@ -4,9 +4,7 @@ jQuery(document).ready(function ($) {
   const summarySection = $(".summary-section");
   const form = $("form.nextui-form");
   // Check for "active" class globally and set form height to 20rem
-  if ($(".step.active").length > 0) {
-    $(".nextui-form").height(320); // 20rem = 320px
-  }
+
   const steps = {
     1: $(".step-1"),
     2: $(".step-2"),
@@ -151,6 +149,8 @@ jQuery(document).ready(function ($) {
       onComplete: function () {
         steps[currentStep].hide(); // Hide the current step
         steps[currentStep].css({ position: "relative" });
+        updateContainerHeight();
+
         // Animate new step in
         steps[stepNumber]
           .show()
@@ -164,7 +164,6 @@ jQuery(document).ready(function ($) {
             duration: 0.5,
             onComplete: function () {
               steps[currentStep].css({ position: "" }); // Remove position relative from the previous step
-              updateContainerHeight();
             },
           }
         );
@@ -189,6 +188,8 @@ jQuery(document).ready(function ($) {
       onComplete: function () {
         steps[currentStep].hide(); // Hide the current step
         steps[currentStep].css({ position: "relative" });
+        updateContainerHeight();
+
         // Animate previous step in
         steps[previousStepNumber]
           .show()
@@ -202,7 +203,6 @@ jQuery(document).ready(function ($) {
             duration: 0.5,
             onComplete: function () {
               steps[currentStep].css({ position: "" }); // Remove position relative from the current step
-              updateContainerHeight();
             },
           }
         );
@@ -210,23 +210,34 @@ jQuery(document).ready(function ($) {
     });
 
     currentStep = previousStepNumber;
+
+    
   }
 
   function updateContainerHeight() {
-    var currentStepHeight = steps[currentStep].outerHeight(true) + 120;
-    var currentFormHeight = $(".nextui-form").height();
+    if (currentStep === 1) {
+      console.log(currentStep, 'is 1')
+      $(".nextui-form").animate({
+        height: "25rem"
+      }, {
+        duration: 500,
+        easing: "swing"
+      });
+    } else {
+      var currentStepHeight = steps[currentStep].outerHeight(true) + 120;
 
-    // Animate the height change along with the sliding animation
-    $(".nextui-form").animate(
-      { height: currentStepHeight },
-      {
-        duration: 500, // Adjust the duration as needed
-        step: function () {
-          // Trigger layout reflow to ensure smooth animation
-          $(".nextui-form").css("display", "block");
-        },
-      }
-    );
+      var currentFormHeight = $(".nextui-form").height();
+
+      $(".nextui-form").animate(
+        { height: currentStepHeight },
+        {
+          duration: 500,
+          step: function () {
+            $(".nextui-form").css("display", "block");
+          },
+        }
+      );
+    }
   }
 
 
@@ -276,12 +287,29 @@ jQuery(document).ready(function ($) {
   function showPreviousSummary() {
     // Hide summary and show previous step
     gsap.to(summarySection, {
-      x: "100%",
+      height: 0,
       opacity: 0,
       duration: 0.5,
+      ease: "power2.inOut",
       onComplete: function () {
         summarySection.hide().css("display", "none");
-        showStep(3); // Show step 3 directly
+        gsap.to(form, {
+          borderColor: "#ddd",
+          boxShadow: "0 0 0.5rem rgba(0, 0, 0, 0.1)",
+          duration: 0.3,
+          ease: "power2.inOut",
+          onComplete: function () {
+            gsap.from(".step-3", {
+              opacity: 0,
+              y: 20,
+              duration: 0.5,
+              ease: "power2.out",
+              onStart: function () {
+                showStep(3); // Show step 3 directly
+              }
+            });
+          }
+        });
       },
     });
   }
