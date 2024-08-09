@@ -4,6 +4,8 @@ jQuery(document).ready(function ($) {
   // Default currency and initial step
   let currency = "USD";
   let currentStep = 1; // Initial step
+  let prevStep = 1; // Initialize prevStep variable
+
   const summarySection = $(".summary-section");
   const $pagesInput = $("#pages-input");
   const $modal = $(".modal");
@@ -120,7 +122,6 @@ jQuery(document).ready(function ($) {
         const inputsAndLabels = steps[stepNumber].find("input, label");
         const otherElements = elements.not("input, label");
 
-
         gsap.set(otherElements, { y: 10, opacity: 0 });
         gsap.set(inputsAndLabels, { y: 0, opacity: 0 });
 
@@ -129,11 +130,11 @@ jQuery(document).ready(function ($) {
           duration: 0.1,
           ease: "power2.out",
           onComplete: function () {
+            prevStep = currentStep;
             currentStep = stepNumber;
             updateHeader(); // Call the updateHeader function
           },
         });
-
 
         gsap.to(otherElements, {
           y: 0,
@@ -150,7 +151,7 @@ jQuery(document).ready(function ($) {
           stagger: 0.05,
           ease: "power2.out",
           delay: 0.1,
-          y: function(index, target) {
+          y: function (index, target) {
             return Math.sin(index * 0.5) * 10;
           },
         });
@@ -246,14 +247,15 @@ jQuery(document).ready(function ($) {
   }
 
   // Update header based on current step
+  // Update header based on current step
   function updateHeader() {
     const header = $(".header");
 
     // Update the header content
     header.html(getStepHeader(currentStep));
 
-    // Add GSAP animation to the header content, excluding the progress bar
-    const headerContent = header.find("*:not(.h-1, .bg-yellowTheme)");
+    // Add GSAP animation to the header content, excluding the number 1 and 2
+    const headerContent = header.find("*:not(.w-8, .h-8)");
     gsap.fromTo(
       headerContent,
       { y: -20, opacity: 0 },
@@ -267,14 +269,15 @@ jQuery(document).ready(function ($) {
     );
 
     // Update the progress bar
-    const progressBar = header.find(".bg-yellowTheme");
-    if (currentStep === 2) {
+    const progressBar = header.find(".bg-yellowTheme:not(.w-8)");
+    console.log(`Current step: ${currentStep}, Previous step: ${prevStep}`);
+    if (currentStep === 2 && prevStep == 1) {
       progressBar.css("width", "0%");
-    } else if (currentStep === 3) {
+    } else if (currentStep === 3 && prevStep == 2) {
       progressBar.css("width", "0%");
       gsap.to(progressBar, {
         width: "100%",
-        duration: 1,
+        duration: 2,
         ease: "power2.out",
         onStart: () => {
           progressBar.removeClass("bg-white").addClass("bg-yellowTheme");
@@ -282,15 +285,18 @@ jQuery(document).ready(function ($) {
       });
     } else if (currentStep === 2 && prevStep === 3) {
       progressBar.css("width", "100%");
+
+      console.log('let me see', progressBar.width());
       gsap.to(progressBar, {
         width: "0%",
-        duration: 2,
+        duration: 3,
         ease: "power2.out",
         onStart: () => {
-          progressBar.removeClass("bg-yellowTheme").addClass("bg-white");
+          progressBar.removeClass("animate-slide-left");
+
         },
         onComplete: () => {
-          progressBar.removeClass("animate-slide-left");
+          progressBar.removeClass("bg-yellowTheme").addClass("bg-white");
         },
       });
     }
