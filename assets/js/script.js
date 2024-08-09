@@ -150,10 +150,6 @@ jQuery(document).ready(function ($) {
           duration: 0.3,
           stagger: 0.05,
           ease: "power2.out",
-          delay: 0.1,
-          y: function (index, target) {
-            return Math.sin(index * 0.5) * 10;
-          },
         });
       },
     });
@@ -277,7 +273,7 @@ jQuery(document).ready(function ($) {
       progressBar.css("width", "0%");
       gsap.to(progressBar, {
         width: "100%",
-        duration: 2,
+        duration: 3,
         ease: "power2.out",
         onStart: () => {
           progressBar.removeClass("bg-white").addClass("bg-yellowTheme");

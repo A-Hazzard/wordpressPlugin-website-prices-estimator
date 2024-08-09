@@ -1,5 +1,16 @@
 export const getStepHeader = (stepNumber) => {
   switch (stepNumber) {
+    case 1: 
+      return `
+          <h2 class="text-3xl text-white w-[90%]" id="header-title">
+            Take the first step towards your dream project
+          </h2>
+          <br />
+          <p class="text-[#D3D3D3] w-[90%]" id="header-description">
+            Use our price estimator to get a project estimate tailored to your
+            needs. It's quick, easy, and free.
+          </p>
+      `;
     case 2:
       return `
         <p class="text-[#D3D3D3] absolute right-4 text-[0.7rem]">Host & Management</p>
