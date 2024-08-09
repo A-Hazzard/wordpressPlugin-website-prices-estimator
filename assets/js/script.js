@@ -117,12 +117,16 @@ jQuery(document).ready(function ($) {
         });
 
         const elements = steps[stepNumber].find("*");
+        const inputsAndLabels = steps[stepNumber].find("input, label");
+        const otherElements = elements.not("input, label");
 
-        gsap.set(elements, { y: 10, opacity: 0 });
+
+        gsap.set(otherElements, { y: 10, opacity: 0 });
+        gsap.set(inputsAndLabels, { y: 0, opacity: 0 });
 
         gsap.to(steps[stepNumber], {
           opacity: 1,
-          duration: 0.3,
+          duration: 0.1,
           ease: "power2.out",
           onComplete: function () {
             currentStep = stepNumber;
@@ -130,13 +134,25 @@ jQuery(document).ready(function ($) {
           },
         });
 
-        gsap.to(elements, {
+
+        gsap.to(otherElements, {
           y: 0,
+          opacity: 1,
+          duration: 0.1,
+          stagger: 0.05,
+          ease: "power2.out",
+          delay: 0.1,
+        });
+
+        gsap.to(inputsAndLabels, {
           opacity: 1,
           duration: 0.3,
           stagger: 0.05,
           ease: "power2.out",
           delay: 0.1,
+          y: function(index, target) {
+            return Math.sin(index * 0.5) * 10;
+          },
         });
       },
     });
@@ -251,13 +267,32 @@ jQuery(document).ready(function ($) {
     );
 
     // Update the progress bar
-    const progressBar = header.find(".bg-yellowTheme:not(.w-8)");
-    if (currentStep === 1) {
-      progressBar.css("width", "0%");
-    } else if (currentStep === 2) {
+    const progressBar = header.find(".bg-yellowTheme");
+    if (currentStep === 2) {
       progressBar.css("width", "0%");
     } else if (currentStep === 3) {
+      progressBar.css("width", "0%");
+      gsap.to(progressBar, {
+        width: "100%",
+        duration: 1,
+        ease: "power2.out",
+        onStart: () => {
+          progressBar.removeClass("bg-white").addClass("bg-yellowTheme");
+        },
+      });
+    } else if (currentStep === 2 && prevStep === 3) {
       progressBar.css("width", "100%");
+      gsap.to(progressBar, {
+        width: "0%",
+        duration: 2,
+        ease: "power2.out",
+        onStart: () => {
+          progressBar.removeClass("bg-yellowTheme").addClass("bg-white");
+        },
+        onComplete: () => {
+          progressBar.removeClass("animate-slide-left");
+        },
+      });
     }
   }
 });
