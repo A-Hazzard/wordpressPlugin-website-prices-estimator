@@ -6,6 +6,7 @@ jQuery(document).ready(function ($) {
   let currentStep = 1; // Initial step
   let prevStep = 1; // Initialize prevStep variable
 
+
   const summarySection = $(".summary-section");
   const $pagesInput = $("#pages-input");
   const $modal = $(".modal");
@@ -30,6 +31,7 @@ jQuery(document).ready(function ($) {
   // Event handlers for navigation buttons
   $(".first-next-step").click(function () {
     showStep(2);
+   
   });
 
   $(".next-step").click(function () {
@@ -98,14 +100,12 @@ jQuery(document).ready(function ($) {
     CUC: 1,
   };
 
-  // Show the step
-  // Show the step
   function showStep(stepNumber) {
     if (stepNumber < 1 || stepNumber > Object.keys(steps).length) return;
-
     gsap.to(steps[currentStep], {
       opacity: 0,
-      duration: 0.2,
+      height: 'auto',
+      duration: 0.1,
       ease: "power2.out",
       onComplete: function () {
         steps[currentStep].hide();
@@ -115,6 +115,7 @@ jQuery(document).ready(function ($) {
           display: "block",
           scale: 1,
           rotation: 0,
+          height: "auto",
           position: "relative",
         });
 
@@ -122,12 +123,14 @@ jQuery(document).ready(function ($) {
         const inputsAndLabels = steps[stepNumber].find("input, label");
         const otherElements = elements.not("input, label");
 
-        gsap.set(otherElements, { y: 10, opacity: 0 });
+
+        gsap.set(otherElements, { y: 5, opacity: 0 });
         gsap.set(inputsAndLabels, { y: 0, opacity: 0 });
 
         gsap.to(steps[stepNumber], {
           opacity: 1,
-          duration: 0.1,
+          duration: 0.5,
+          height: "auto",
           ease: "power2.out",
           onComplete: function () {
             prevStep = currentStep;
@@ -139,16 +142,18 @@ jQuery(document).ready(function ($) {
         gsap.to(otherElements, {
           y: 0,
           opacity: 1,
-          duration: 0.1,
-          stagger: 0.05,
+          duration: 0.9,
+          stagger: 0.02,
+          height: "auto",
           ease: "power2.out",
-          delay: 0.1,
+          delay: 0.05,
         });
 
         gsap.to(inputsAndLabels, {
           opacity: 1,
-          duration: 0.3,
-          stagger: 0.05,
+          height: "auto",
+          duration: 1,
+          stagger: 0.02,
           ease: "power2.out",
         });
       },
