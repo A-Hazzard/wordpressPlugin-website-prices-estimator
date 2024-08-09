@@ -1,4 +1,4 @@
-import { step1Header, step2Header, step3Header } from "./headerTemplates.js";
+import { getStepHeader } from "./headerTemplates.js";
 
 jQuery(document).ready(function ($) {
   // Default currency and initial step
@@ -97,40 +97,47 @@ jQuery(document).ready(function ($) {
   };
 
   // Show the step
+  // Show the step
   function showStep(stepNumber) {
     if (stepNumber < 1 || stepNumber > Object.keys(steps).length) return;
 
     gsap.to(steps[currentStep], {
-      x: "0%",
       opacity: 0,
-      duration: 0.5,
-      scale: 0.3,
-      ease: "back.in(1.7)",
+      duration: 0.2,
+      ease: "power2.out",
       onComplete: function () {
-        steps[currentStep].hide().css({ position: "absolute" });
+        steps[currentStep].hide();
 
         steps[stepNumber].show().css({
-          x: "100%",
           opacity: 0,
           display: "block",
-          transformOrigin: "0% 100%",
-          position: "relative", // Set the current step to position: relative
+          scale: 1,
+          rotation: 0,
+          position: "relative",
         });
-        gsap.fromTo(
-          steps[stepNumber],
-          { x: "100%", opacity: 0, scale: 0.3 },
-          {
-            x: "0%",
-            opacity: 1,
-            duration: 0.5,
-            scale: 1,
-            ease: "back.out(1.7)",
-            onComplete: function () {
-              steps[currentStep].css({ position: "absolute" }); // Set the previous step to position: absolute
-              currentStep = stepNumber;
-            },
-          }
-        );
+
+        const elements = steps[stepNumber].find("*");
+
+        gsap.set(elements, { y: 10, opacity: 0 });
+
+        gsap.to(steps[stepNumber], {
+          opacity: 1,
+          duration: 0.3,
+          ease: "power2.out",
+          onComplete: function () {
+            currentStep = stepNumber;
+            updateHeader(); // Call the updateHeader function
+          },
+        });
+
+        gsap.to(elements, {
+          y: 0,
+          opacity: 1,
+          duration: 0.3,
+          stagger: 0.05,
+          ease: "power2.out",
+          delay: 0.1,
+        });
       },
     });
 
@@ -224,33 +231,33 @@ jQuery(document).ready(function ($) {
 
   // Update header based on current step
   function updateHeader() {
-    const header = $("header");
+    const header = $(".header");
 
-    // Clear the header content before setting new content
-    header.empty();
+    // Update the header content
+    header.html(getStepHeader(currentStep));
 
-    // Ensure correct header content is set based on the current step
-    switch (currentStep) {
-      case 1:
-        header.html(step1Header);
-        $(".progress-bar")
-          .removeClass("bg-yellowTheme animate-slide-right")
-          .addClass("bg-white");
-        break;
-      case 2:
-        header.html(step2Header);
-        $(".progress-bar")
-          .addClass("bg-yellowTheme animate-slide-right")
-          .removeClass("bg-white");
-        break;
-      case 3:
-        header.html(step3Header);
-        $(".progress-bar")
-          .addClass("bg-yellowTheme animate-slide-right")
-          .removeClass("bg-white");
-        break;
-      default:
-        console.error("Invalid step number:", currentStep);
+    // Add GSAP animation to the header content, excluding the progress bar
+    const headerContent = header.find("*:not(.h-1, .bg-yellowTheme)");
+    gsap.fromTo(
+      headerContent,
+      { y: -20, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.5,
+        ease: "power2.out",
+        stagger: 0.1,
+      }
+    );
+
+    // Update the progress bar
+    const progressBar = header.find(".bg-yellowTheme:not(.w-8)");
+    if (currentStep === 1) {
+      progressBar.css("width", "0%");
+    } else if (currentStep === 2) {
+      progressBar.css("width", "0%");
+    } else if (currentStep === 3) {
+      progressBar.css("width", "100%");
     }
   }
 });
