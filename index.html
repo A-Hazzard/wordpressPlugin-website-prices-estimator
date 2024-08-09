@@ -45,7 +45,7 @@
           </p>
       </header>
       
-      <div class="step step-1 h-[35rem] absolute">
+      <div class="step step-1 h-[35rem]">
         <div class="text-lg mt-3 px-4 flex flex-col gap-2">
           <p>How many pages do you envision for your website?</p>
           <input
@@ -60,7 +60,7 @@
           />
 
           <button
-            class="next-step w-1/2 mt-3 px-4 py-2 text-white bg-yellowTheme rounded-md"
+            class="first-next-step w-1/2 mt-3 px-4 py-2 text-white bg-yellowTheme rounded-md"
           >
             Next <i class="fa-solid fa-arrow-right"></i>
           </button>
@@ -434,9 +434,6 @@
               yellowTheme: "#ffca3a",
               grayTheme: "#7B7B7B",
             },
-            backgroundImage: {
-              mountain: "url('assets/images/mountain.png')",
-            },
             fontSize: {
               h3: "1.4rem",
             },
@@ -445,30 +442,6 @@
       };
     </script>
 
-    <script>
-      const pagesInput = document.getElementById("pages-input");
-
-      pagesInput.addEventListener("input", (event) => {
-        // Remove non-numeric characters
-        event.target.value = event.target.value.replace(/\D/g, "");
-      });
-
-      // Get the modal and the close button
-      const modal = document.querySelector(".modal");
-      const closeModal = document.querySelector(".close-modal");
-
-      // Get the "Details" button
-      const detailsButton = document.querySelector(".details");
-
-      // Add click event listener to the "Details" button
-      detailsButton.addEventListener("click", () => {
-        modal.classList.remove("hidden");
-      });
-
-      // Add click event listener to the close button
-      closeModal.addEventListener("click", () => {
-        modal.classList.add("hidden");
-      });
-    </script>
+  
   </body>
 </html>
