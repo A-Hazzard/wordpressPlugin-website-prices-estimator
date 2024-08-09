@@ -146,221 +146,383 @@ if (!class_exists('WebsitePriceEstimator')) {
             <script>
 
             </script>
-            <section class="relative">
-                <header class="bg-blueTheme p-4 header">
-                    <h2 class="text-3xl text-white w-[90%]" id="header-title">
-                        Take the first step towards your dream project
-                    </h2>
-                    <br />
-                    <p class="text-[#D3D3D3] w-[90%]" id="header-description">
-                        Use our price estimator to get a project estimate tailored to your
-                        needs. It's quick, easy, and free.
-                    </p>
-                </header>
+           <section class="relative">
+      <header class="bg-blueTheme p-4 header">
+          <h2 class="text-3xl text-white w-[90%]" id="header-title">
+            Take the first step towards your dream project
+          </h2>
+          <br />
+          <p class="text-[#D3D3D3] w-[90%]" id="header-description">
+            Use our price estimator to get a project estimate tailored to your
+            needs. It's quick, easy, and free.
+          </p>
+      </header>
+      
+      <div class="step step-1 h-[35rem]">
+        <div class="text-lg mt-3 px-4 flex flex-col gap-2">
+          <p>How many pages do you envision for your website?</p>
+          <input
+            type="text"
+            name="pages"
+            id="pages-input"
+            placeholder="1"
+            min="1"
+            class="w-2/3 rounded-md px-2 py-1 border focus:border-blueTheme"
+            inputmode="numeric"
+            pattern="[0-9]*"
+          />
 
-                <div class="step step-1 h-[35rem]">
-                    <div class="text-lg mt-3 px-4 flex flex-col gap-2">
-                        <p>How many pages do you envision for your website?</p>
-                        <input type="text" name="pages" id="pages-input" placeholder="1" min="1"
-                            class="w-2/3 rounded-md px-2 py-1 border focus:border-blueTheme" inputmode="numeric" pattern="[0-9]*" />
+          <button
+            class="first-next-step w-1/2 mt-3 px-4 py-2 text-white bg-yellowTheme rounded-md"
+          >
+            Next <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
 
-                        <button class="next-step w-1/2 mt-3 px-4 py-2 text-white bg-yellowTheme rounded-md">
-                            Next <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
+        <img src="<?php echo esc_url($image_url); ?>" alt="mountain" class="w-full h-full" />
 
-                    <img src="<?php echo esc_url($image_url); ?>" alt="mountain" class="w-full h-full" />
+      </div>
 
+      <div class="px-4 pb-4 mt-3 flex flex-col gap-2 step step-2 absolute hidden">
+        <h3 class="text-h3">SELECT FUNCTIONALITIES</h3>
+        <p class="text-grayTheme">
+          From e-commerce capabilities to interactive galleries, pick what you
+          need.
+        </p>
+
+        <div class="text-lg mt-2 flex flex-col gap-2">
+          <div class="text-base flex flex-col gap-2">
+            <div>
+              <input
+                type="checkbox"
+                id="contact-form"
+                class="feature"
+                data-usd="34"
+                data-feature="Contact Form"
+              />
+              <label for="contact-form">Contact Form</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="image-slider"
+                class="feature"
+                data-usd="46"
+                data-feature="Image Slider"
+              />
+              <label for="image-slider">Image Slider</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="social-media"
+                class="feature"
+                data-usd="17"
+                data-feature="Social Media Integration"
+              />
+              <label for="social-media">Social Media Integration</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="ecommerce"
+                class="feature"
+                data-usd="344"
+                data-feature="E-commerce Functionality"
+              />
+              <label for="ecommerce">E-commerce Functionality</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="cms"
+                class="feature"
+                data-usd="172"
+                data-feature="Content Management System (CMS)"
+              />
+              <label for="cms">Content Management System</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="search"
+                class="feature"
+                data-usd="69"
+                data-feature="Search Functionality"
+              />
+              <label for="search">Search Functionality</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="blog"
+                class="feature"
+                data-usd="103"
+                data-feature="Blog/News Section"
+              />
+              <label for="blog">Blog/News Section</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="user-registration"
+                class="feature"
+                data-usd="92"
+                data-feature="User Registration/Login"
+              />
+              <label for="user-registration">User Registration/Login</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="newsletter"
+                class="feature"
+                data-usd="34"
+                data-feature="Newsletter Subscription"
+              />
+              <label for="newsletter">Newsletter Subscription</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="mobile-responsive"
+                class="feature"
+                data-usd="92"
+                data-feature="Mobile Responsiveness"
+              />
+              <label for="mobile-responsive">Mobile Responsiveness</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="seo"
+                class="feature"
+                data-usd="69"
+                data-feature="SEO Optimization"
+              />
+              <label for="seo">SEO Optimization</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="analytics"
+                class="feature"
+                data-usd="34"
+                data-feature="Analytics Integration (Google Analytics)"
+              />
+              <label for="analytics">Analytics Integration</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="security"
+                class="feature"
+                data-usd="69"
+                data-feature="Security Features (SSL Certificate, Firewall)"
+              />
+              <label for="security">Security Features</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="third-party-api"
+                class="feature"
+                data-usd="115"
+                data-feature="Integration with third-party APIs"
+              />
+              <label for="third-party-api"
+                >Integration with third-party APIs</label
+              >
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="custom-functionality"
+                class="feature"
+                data-usd="745"
+                data-feature="Any custom functionality"
+              />
+              <label for="custom-functionality"
+                >Any custom functionality</label
+              >
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="additional-pages"
+                class="feature"
+                data-usd="50"
+                data-feature="Additional Web Pages"
+              />
+              <label for="additional-pages">Additional Web Pages</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 flex flex-row no-wrap gap-3">
+          <button
+            class="previous-step w-auto px-3 py-2 text-black bg-gray-300 rounded-md"
+          >
+            <i class="fa-solid fa-arrow-left"></i> Previous
+          </button>
+
+          <button
+            class="next-step w-auto px-3 py-2 text-white bg-yellowTheme rounded-md ml-auto"
+          >
+            Next <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="px-4 pb-4 mt-3 flex flex-col gap-2 step step-3 absolute hidden">
+        <h3 class="text-h3">HOST & MANAGEMENT PLANS</h3>
+        <p class="text-grayTheme">
+          From hosting to maintenance, pick the plan that suits your needs.
+        </p>
+
+        <div class="plans text-[0.9rem] mt-2 flex flex-col">
+          <div class="plan-item flex items-center">
+            <input
+              type="checkbox"
+              class="package-input"
+              data-usd="45"
+              data-feature="Web Hosting and Cybersecurity Solutions"
+            />
+            <label class="ml-2 mt-3"
+              >Web Hosting and Cybersecurity Solutions: <br />Starting from
+              $45</label
+            >
+          </div>
+          <div class="plan-item flex items-center">
+            <input
+              type="checkbox"
+              class="package-input"
+              data-usd="130"
+              data-feature="3 Hour SLA"
+            />
+            <label class="ml-2 mt-3"
+              >Website Maintenance Package: <br />3 Hour SLA -
+              $130/month</label
+            >
+          </div>
+          <div class="plan-item flex items-center">
+            <input
+              type="checkbox"
+              class="package-input"
+              data-usd="220"
+              data-feature="5 Hour SLA"
+            />
+            <label class="ml-2 mt-3"
+              >Website Maintenance Package: <br />5 Hour SLA -
+              $220/month</label
+            >
+          </div>
+          <div class="plan-item flex items-center">
+            <input
+              type="checkbox"
+              class="package-input"
+              data-usd="315"
+              data-feature="8 Hour SLA"
+            />
+            <label class="ml-2 mt-3"
+              >Website Maintenance Package: <br />8 Hour SLA -
+              $315/month</label
+            >
+          </div>
+        </div>
+
+        <div class="mt-3 flex flex-row no-wrap gap-3">
+          <button
+            class="previous-step w-auto px-3 py-2 text-black bg-gray-300 rounded-md"
+          >
+            <i class="fa-solid fa-arrow-left"></i> Previous
+          </button>
+
+          <button
+            class="details w-auto px-3 py-2 text-white bg-yellowTheme rounded-md ml-auto"
+          >
+            Details <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div
+        class="modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center hidden"
+      >
+        <div
+          class="bg-white w-[95%] md:w-[80%] lg:w-[60%] rounded-md shadow-lg"
+        >
+          <div
+            class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-t-md"
+          >
+            <h2 class="text-h2">PRICE SUMMARY</h2>
+            <button class="close-modal text-2xl font-bold cursor-pointer">
+              ×
+            </button>
+          </div>
+          <div class="p-6 flex flex-col items-center">
+            <p class="text-h3 mb-4">Choose the best options for your needs</p>
+            <div class="w-full flex flex-col gap-4">
+              <div
+                class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-md"
+              >
+                <div class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    class="package-input"
+                    data-usd="45"
+                    data-feature="Web Hosting and Cybersecurity Solutions"
+                  />
+                  <p>
+                    Web Hosting and Cybersecurity Solutions: Starting from $45
+                  </p>
                 </div>
-
-                <div class="px-4 pb-4 mt-3 flex flex-col gap-2 step step-2 absolute hidden">
-                    <h3 class="text-h3">SELECT FUNCTIONALITIES</h3>
-                    <p class="text-grayTheme">
-                        From e-commerce capabilities to interactive galleries, pick what you
-                        need.
-                    </p>
-
-                    <div class="text-lg mt-2 flex flex-col gap-2">
-                        <div class="text-base flex flex-col gap-2">
-                            <div>
-                                <input type="checkbox" id="contact-form" class="feature" data-usd="34"
-                                    data-feature="Contact Form" />
-                                <label for="contact-form">Contact Form</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="image-slider" class="feature" data-usd="46"
-                                    data-feature="Image Slider" />
-                                <label for="image-slider">Image Slider</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="social-media" class="feature" data-usd="17"
-                                    data-feature="Social Media Integration" />
-                                <label for="social-media">Social Media Integration</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="ecommerce" class="feature" data-usd="344"
-                                    data-feature="E-commerce Functionality" />
-                                <label for="ecommerce">E-commerce Functionality</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="cms" class="feature" data-usd="172"
-                                    data-feature="Content Management System (CMS)" />
-                                <label for="cms">Content Management System</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="search" class="feature" data-usd="69"
-                                    data-feature="Search Functionality" />
-                                <label for="search">Search Functionality</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="blog" class="feature" data-usd="103" data-feature="Blog/News Section" />
-                                <label for="blog">Blog/News Section</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="user-registration" class="feature" data-usd="92"
-                                    data-feature="User Registration/Login" />
-                                <label for="user-registration">User Registration/Login</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="newsletter" class="feature" data-usd="34"
-                                    data-feature="Newsletter Subscription" />
-                                <label for="newsletter">Newsletter Subscription</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="mobile-responsive" class="feature" data-usd="92"
-                                    data-feature="Mobile Responsiveness" />
-                                <label for="mobile-responsive">Mobile Responsiveness</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="seo" class="feature" data-usd="69" data-feature="SEO Optimization" />
-                                <label for="seo">SEO Optimization</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="analytics" class="feature" data-usd="34"
-                                    data-feature="Analytics Integration (Google Analytics)" />
-                                <label for="analytics">Analytics Integration</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="security" class="feature" data-usd="69"
-                                    data-feature="Security Features (SSL Certificate, Firewall)" />
-                                <label for="security">Security Features</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="third-party-api" class="feature" data-usd="115"
-                                    data-feature="Integration with third-party APIs" />
-                                <label for="third-party-api">Integration with third-party APIs</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="custom-functionality" class="feature" data-usd="745"
-                                    data-feature="Any custom functionality" />
-                                <label for="custom-functionality">Any custom functionality</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="additional-pages" class="feature" data-usd="50"
-                                    data-feature="Additional Web Pages" />
-                                <label for="additional-pages">Additional Web Pages</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-3 flex flex-row no-wrap gap-3">
-                        <button class="previous-step w-auto px-3 py-2 text-black bg-gray-300 rounded-md">
-                            <i class="fa-solid fa-arrow-left"></i> Previous
-                        </button>
-
-                        <button class="next-step w-auto px-3 py-2 text-white bg-yellowTheme rounded-md ml-auto">
-                            Next <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
+              </div>
+              <div
+                class="flex justify-between items-center bg-grayTheme text-black px-4 py-2 rounded-md"
+              >
+                <div class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    class="package-input"
+                    data-usd="34"
+                    data-feature="Contact Form"
+                  />
+                  <p>Contact Form</p>
                 </div>
-
-                <div class="px-4 pb-4 mt-3 flex flex-col gap-2 step step-3 absolute hidden">
-                    <h3 class="text-h3">HOST & MANAGEMENT PLANS</h3>
-                    <p class="text-grayTheme">
-                        From hosting to maintenance, pick the plan that suits your needs.
-                    </p>
-
-                    <div class="plans text-[0.9rem] mt-2 flex flex-col">
-                        <div class="plan-item flex items-center">
-                            <input type="checkbox" class="package-input" data-usd="45"
-                                data-feature="Web Hosting and Cybersecurity Solutions" />
-                            <label class="ml-2 mt-3">Web Hosting and Cybersecurity Solutions: <br />Starting from
-                                $45</label>
-                        </div>
-                        <div class="plan-item flex items-center">
-                            <input type="checkbox" class="package-input" data-usd="130" data-feature="3 Hour SLA" />
-                            <label class="ml-2 mt-3">Website Maintenance Package: <br />3 Hour SLA -
-                                $130/month</label>
-                        </div>
-                        <div class="plan-item flex items-center">
-                            <input type="checkbox" class="package-input" data-usd="220" data-feature="5 Hour SLA" />
-                            <label class="ml-2 mt-3">Website Maintenance Package: <br />5 Hour SLA -
-                                $220/month</label>
-                        </div>
-                        <div class="plan-item flex items-center">
-                            <input type="checkbox" class="package-input" data-usd="315" data-feature="8 Hour SLA" />
-                            <label class="ml-2 mt-3">Website Maintenance Package: <br />8 Hour SLA -
-                                $315/month</label>
-                        </div>
-                    </div>
-
-                    <div class="mt-3 flex flex-row no-wrap gap-3">
-                        <button class="previous-step w-auto px-3 py-2 text-black bg-gray-300 rounded-md">
-                            <i class="fa-solid fa-arrow-left"></i> Previous
-                        </button>
-
-                        <button class="details w-auto px-3 py-2 text-white bg-yellowTheme rounded-md ml-auto">
-                            Details <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
+              </div>
+              <div
+                class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-md"
+              >
+                <div class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    class="package-input"
+                    data-usd="46"
+                    data-feature="Image Slider"
+                  />
+                  <p>Image Slider</p>
                 </div>
-
-                <!-- Modal -->
-                <div
-                    class="modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-                    <div class="bg-white w-[95%] md:w-[80%] lg:w-[60%] rounded-md shadow-lg">
-                        <div class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-t-md">
-                            <h2 class="text-h2">PRICE SUMMARY</h2>
-                            <button class="close-modal text-2xl font-bold cursor-pointer">
-                                ×
-                            </button>
-                        </div>
-                        <div class="p-6 flex flex-col items-center">
-                            <p class="text-h3 mb-4">Choose the best options for your needs</p>
-                            <div class="w-full flex flex-col gap-4">
-                                <div class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-md">
-                                    <div class="flex items-center gap-2">
-                                        <input type="checkbox" class="package-input" data-usd="45"
-                                            data-feature="Web Hosting and Cybersecurity Solutions" />
-                                        <p>
-                                            Web Hosting and Cybersecurity Solutions: Starting from $45
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center bg-grayTheme text-black px-4 py-2 rounded-md">
-                                    <div class="flex items-center gap-2">
-                                        <input type="checkbox" class="package-input" data-usd="34" data-feature="Contact Form" />
-                                        <p>Contact Form</p>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-md">
-                                    <div class="flex items-center gap-2">
-                                        <input type="checkbox" class="package-input" data-usd="46" data-feature="Image Slider" />
-                                        <p>Image Slider</p>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center bg-grayTheme text-black px-4 py-2 rounded-md">
-                                    <div class="flex items-center gap-2">
-                                        <input type="checkbox" class="package-input" data-usd="17"
-                                            data-feature="Social Media Integration" />
-                                        <p>Social Media Integration</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              </div>
+              <div
+                class="flex justify-between items-center bg-grayTheme text-black px-4 py-2 rounded-md"
+              >
+                <div class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    class="package-input"
+                    data-usd="17"
+                    data-feature="Social Media Integration"
+                  />
+                  <p>Social Media Integration</p>
                 </div>
-            </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
             <script type="module" src="<?php echo plugins_url('assets/js/script.js', __FILE__); ?>"></script>
 
 

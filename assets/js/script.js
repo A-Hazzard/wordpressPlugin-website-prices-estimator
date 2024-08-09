@@ -114,6 +114,7 @@ jQuery(document).ready(function ($) {
           opacity: 0,
           display: "block",
           transformOrigin: "0% 100%",
+          position: "relative", // Set the current step to position: relative
         });
         gsap.fromTo(
           steps[stepNumber],
@@ -125,9 +126,8 @@ jQuery(document).ready(function ($) {
             scale: 1,
             ease: "back.out(1.7)",
             onComplete: function () {
-              steps[currentStep].css({ position: "" });
+              steps[currentStep].css({ position: "absolute" }); // Set the previous step to position: absolute
               currentStep = stepNumber;
-              updateHeader(); // Update header after step transition
             },
           }
         );
