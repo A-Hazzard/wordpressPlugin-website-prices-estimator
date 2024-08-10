@@ -1,4 +1,4 @@
-import { getStepHeader } from "./headerTemplates.js";
+import { getStepHeader, getMobileStepHeader } from "./headerTemplates.js";
 
 jQuery(document).ready(function ($) {
   let currentStep = 1;
@@ -285,52 +285,45 @@ jQuery(document).ready(function ($) {
     const header = $(".header");
 
     // Update the header content
-    header.html(getStepHeader(currentStep));
-
+      if (window.innerWidth < 768) {
+          header.html(getStepHeader(currentStep));
+      } else {
+          header.html(getMobileStepHeader(currentStep));
+      }
     // Add GSAP animation to the header content, excluding the number 1 and 2
     const headerContent = header.find("*:not(.w-8, .h-8)");
     gsap.fromTo(
       headerContent,
       { y: -20, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.5,
-        ease: "power2.out",
-        stagger: 0.1,
-      }
+      { y: 0, opacity: 1, duration: 0.5, ease: "power2.out", stagger: 0.1 }
     );
 
     // Update the progress bar
     const progressBar = header.find(".bg-yellowTheme:not(.w-8)");
-    console.log(`Current step: ${currentStep}, Previous step: ${prevStep}`);
-    if (currentStep === 2 && prevStep == 1) {
-      progressBar.css("width", "0%");
-    } else if (currentStep === 3 && prevStep == 2) {
-      progressBar.css("width", "0%");
-      gsap.to(progressBar, {
-        width: "100%",
-        duration: 3,
-        ease: "power2.out",
-        onStart: () => {
-          progressBar.removeClass("bg-white").addClass("bg-yellowTheme");
-        },
+    
+    if (currentStep === 2 && prevStep == 1)progressBar.css("width", "0%");
+    
+    else if (currentStep === 3 && prevStep == 2) {
+        progressBar.css("width", "0%");
+        gsap.to(progressBar, {
+          width: "100%",
+          duration: 3,
+          ease: "power2.out",
+          onStart: () => progressBar.removeClass("bg-white").addClass("bg-yellowTheme"),
       });
     } else if (currentStep === 2 && prevStep === 3) {
       progressBar.css("width", "100%");
 
-      console.log("let me see", progressBar.width());
       gsap.to(progressBar, {
         width: "0%",
         duration: 3,
         ease: "power2.out",
-        onStart: () => {
-          progressBar.removeClass("animate-slide-left");
-        },
-        onComplete: () => {
-          progressBar.removeClass("bg-yellowTheme").addClass("bg-white");
-        },
+        onStart: () => progressBar.removeClass("animate-slide-left"),
+        onComplete: () => progressBar.removeClass("bg-yellowTheme").addClass("bg-white"),
       });
     }
   }
+
+
+
 });
