@@ -23,9 +23,11 @@ jQuery(document).ready(function ($) {
   // Modal button handlers
   $detailsButton.on("click", function () {
     $modal.css({display: "flex"});
+    $('html, body').css('overflow', 'hidden');
   });
   $closeModal.on("click", function () {
     $modal.css({display: "none"});
+    $('html, body').css('overflow', '');
   });
 
   // Event handlers for navigation buttons
