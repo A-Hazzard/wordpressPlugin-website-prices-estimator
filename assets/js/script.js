@@ -36,6 +36,7 @@ jQuery(document).ready(function ($) {
   $detailsButton.on("click", () => {
     $modal.css({display: "flex"});
     $('html, body').css('overflow', 'hidden');
+    updateSummary();
   });
   $closeModal.on("click", () => {
     $modal.css({display: "none"});
@@ -183,35 +184,55 @@ jQuery(document).ready(function ($) {
   function updateSummary() {
     try {
       const { total, summaryItems } = calculateTotal();
-      const summary = $("#summary-content");
-      const totalPrice = $("#total-price");
+      const summaryContent = $(".modal .text-left");
+      const totalPrice = $(".total");
 
-      summary.empty();
-      summaryItems.forEach(({ feature, price }) => {
-        summary.append(
-          `<tr><td>${feature}</td><td>${price.toFixed(2)} ${currency}</td></tr>`
+      // Clear existing summary items
+      summaryContent.empty();
+      console.log(summaryItems)
+      // Add summary items dynamically
+      summaryItems.forEach(({ feature, price }, index) => {
+        const bgClass =
+          index % 2 === 0
+            ? "bg-[#0061FF] bg-opacity-[29%]"
+            : "bg-blueTheme bg-opacity-[11%]";
+        summaryContent.append(
+          `<p class="flex justify-between items-center ${bgClass} text-black px-4 py-2">
+                <span>${feature}</span>
+                <span>${price.toFixed(2)} ${currency}</span>
+            </p>`
         );
       });
-      totalPrice.text(`${total.toFixed(2)} ${currency}`);
 
-      summarySection.removeClass("hidden");
+      // Update total price
+      totalPrice.text(`Total: ${total.toFixed(2)} ${currency}`);
+
+      // Show the modal
+      $(".modal").css({ display: "flex" });
+      $("html, body").css("overflow", "hidden");
     } catch (error) {
       console.error("Error in updateSummary:", error.message);
     }
   }
 
+
   function calculateTotal() {
     try {
       let total = 0;
       let summaryItems = [];
-      let numberOfPages = parseInt($("#number-of-pages").val(), 10);
+      let numberOfPages = parseInt($("#pages-input").val(), 10) || 1;
 
-      $(".feature:checked, .package-input:checked").each(() => {
+      summaryItems.push({
+        feature: `Number of Pages: ${numberOfPages}`,
+        price: 0,
+      });
+
+      $(".feature:checked, .package-input:checked").each(function () {
         const feature = $(this).data("feature");
         let price = parseFloat($(this).data("usd"));
 
-        if (numberOfPages > 8) {
-          price += (numberOfPages - 8) * 50;
+        if ($(this).attr("id") === "additional-pages") {
+          price *= numberOfPages - 1;
         }
 
         price = currency === "USD" ? price : convertCurrency(price, currency);
