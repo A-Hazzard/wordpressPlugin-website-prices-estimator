@@ -2,7 +2,7 @@ import { getStepHeader } from "./headerTemplates.js";
 
 jQuery(document).ready(function ($) {
   let currentStep = 1;
-  let prevStep = 1; 
+  let prevStep = 1;
 
   let currency = "USD";
   const summarySection = $(".summary-section");
@@ -19,13 +19,27 @@ jQuery(document).ready(function ($) {
 
   // Exchange rates for different currencies
   const exchangeRates = {
-    USD: 1, JMD: 150.85, CAD: 1.37, EUR: 0.93, 
-    GBP: 0.77, DOP: 55.35, HTG: 137.58,
-    BBD: 2, BZD: 2.01, GYD: 211.55, TTD: 6.79, 
-    AWG: 1.8, BMD: 1, KYD: 0.82, ANG: 1.79, 
-    XCD: 2.7, BSD: 1, CUP: 24.0, CUC: 1
-  }
-    // Sanitize pages input
+    USD: 1,
+    JMD: 150.85,
+    CAD: 1.37,
+    EUR: 0.93,
+    GBP: 0.77,
+    DOP: 55.35,
+    HTG: 137.58,
+    BBD: 2,
+    BZD: 2.01,
+    GYD: 211.55,
+    TTD: 6.79,
+    AWG: 1.8,
+    BMD: 1,
+    KYD: 0.82,
+    ANG: 1.79,
+    XCD: 2.7,
+    BSD: 1,
+    CUP: 24.0,
+    CUC: 1,
+  };
+  // Sanitize pages input
   $pagesInput.on("input", () => {
     $(this).val(function (_, value) {
       return value.replace(/\D/g, "");
@@ -34,13 +48,13 @@ jQuery(document).ready(function ($) {
 
   // Modal button handlers
   $detailsButton.on("click", () => {
-    $modal.css({display: "flex"});
-    $('html, body').css('overflow', 'hidden');
+    $modal.css({ display: "flex" });
+    $("html, body").css("overflow", "hidden");
     updateSummary();
   });
   $closeModal.on("click", () => {
-    $modal.css({display: "none"});
-    $('html, body').css('overflow', '');
+    $modal.css({ display: "none" });
+    $("html, body").css("overflow", "");
   });
 
   // Event handlers for navigation buttons
@@ -74,22 +88,20 @@ jQuery(document).ready(function ($) {
     showSummary();
   });
 
-  $('select[name="currency"]').change(() => {
+  $("select.currency-select").change(function () {
     try {
       currency = $(this).val();
-      updatePrices();
+      updatePrices(); // Update prices based on new currency
     } catch (error) {
       console.error("Error in currency change handler:", error.message);
     }
   });
 
-  
-
   function showStep(stepNumber) {
     if (stepNumber < 1 || stepNumber > Object.keys(steps).length) return;
     gsap.to(steps[currentStep], {
       opacity: 0,
-      height: 'auto',
+      height: "auto",
       duration: 0.1,
       ease: "power2.out",
       onComplete: () => {
@@ -108,7 +120,6 @@ jQuery(document).ready(function ($) {
         const elements = steps[stepNumber].find("*");
         const inputsAndLabels = steps[stepNumber].find("input, label");
         const otherElements = elements.not("input, label");
-
 
         gsap.set(otherElements, { y: 5, opacity: 0 });
         gsap.set(inputsAndLabels, { y: 0, opacity: 0 });
@@ -144,13 +155,14 @@ jQuery(document).ready(function ($) {
         });
       },
     });
-    
 
     $(".step").removeClass("active");
     $(`.step-${stepNumber}`).addClass("active");
   }
 
-  function showSummary() { summarySection.removeClass("hidden"); }
+  function showSummary() {
+    summarySection.removeClass("hidden");
+  }
 
   function convertCurrency(amount, toCurrency) {
     try {
@@ -160,52 +172,74 @@ jQuery(document).ready(function ($) {
       return (amount * exchangeRates[toCurrency]).toFixed(2);
     } catch (error) {
       console.error("Error in convertCurrency:", error.message);
-      return amount.toFixed(2);
+      return amount.toFixed(2); // Return the amount as is if conversion fails
     }
   }
 
+
+  // Function to update the total price in the modal
+  function updateTotalPrice() {
+    try {
+      const { total } = calculateTotal();
+      const totalPrice = $(".total");
+      totalPrice.text(`Total: ${total.toFixed(2)} ${currency}`);
+    } catch (error) {
+      console.error("Error in updateTotalPrice:", error.message);
+    }
+  }
+
+  // Function to update the prices in the modal based on the selected currency
   function updatePrices() {
     try {
-      $(".feature:checked, .package-input:checked").each(() => {
+      $(".feature:checked, .package-input:checked").each(function () {
         const usdPrice = $(this).data("usd");
-        const convertedPrice = convertCurrency(usdPrice, currency);
+
+        if (typeof usdPrice === "undefined") {
+          console.error("Error in updatePrices: 'usdPrice' is undefined");
+          return; // Skip this item if usdPrice is undefined
+        }
+
+        const price = parseFloat(usdPrice);
+        const convertedPrice = convertCurrency(price, currency);
+
         $(this)
           .closest(".feature-item, .plan-item")
           .find("label")
           .text(`${convertedPrice} ${currency}`);
       });
 
-      updateSummary();
+      // Only update the total price
+      updateTotalPrice();
     } catch (error) {
       console.error("Error in updatePrices:", error.message);
     }
   }
 
+
   function updateSummary() {
     try {
-      const { total, summaryItems } = calculateTotal();
+      const { summaryItems } = calculateTotal();
       const summaryContent = $(".modal .text-left");
       const totalPrice = $(".total");
 
-      // Clear existing summary items
+      // Clear existing summary items (not total)
       summaryContent.empty();
-      console.log(summaryItems)
-      // Add summary items dynamically
-      summaryItems.forEach(({ feature, price }, index) => {
+
+      // Add summary items dynamically (without prices)
+      summaryItems.forEach(({ feature }, index) => {
         const bgClass =
           index % 2 === 0
             ? "bg-[#0061FF] bg-opacity-[29%]"
             : "bg-blueTheme bg-opacity-[11%]";
         summaryContent.append(
           `<p class="flex justify-between items-center ${bgClass} text-black px-4 py-2">
-                <span>${feature}</span>
-                <span>${price.toFixed(2)} ${currency}</span>
-            </p>`
+              <span>${feature}</span>
+          </p>`
         );
       });
 
       // Update total price
-      totalPrice.text(`Total: ${total.toFixed(2)} ${currency}`);
+      updateTotalPrice();
 
       // Show the modal
       $(".modal").css({ display: "flex" });
@@ -216,16 +250,13 @@ jQuery(document).ready(function ($) {
   }
 
 
+
+
   function calculateTotal() {
     try {
       let total = 0;
       let summaryItems = [];
       let numberOfPages = parseInt($("#pages-input").val(), 10) || 1;
-
-      summaryItems.push({
-        feature: `Number of Pages: ${numberOfPages}`,
-        price: 0,
-      });
 
       $(".feature:checked, .package-input:checked").each(function () {
         const feature = $(this).data("feature");
@@ -235,8 +266,11 @@ jQuery(document).ready(function ($) {
           price *= numberOfPages - 1;
         }
 
-        price = currency === "USD" ? price : convertCurrency(price, currency);
-        total += parseFloat(price);
+        price =
+          currency === "USD"
+            ? price
+            : parseFloat(convertCurrency(price, currency));
+        total += price;
         summaryItems.push({ feature, price });
       });
 
@@ -246,6 +280,7 @@ jQuery(document).ready(function ($) {
       return { total: 0, summaryItems: [] };
     }
   }
+
 
   // Update header based on current step
   function updateHeader() {
@@ -286,14 +321,13 @@ jQuery(document).ready(function ($) {
     } else if (currentStep === 2 && prevStep === 3) {
       progressBar.css("width", "100%");
 
-      console.log('let me see', progressBar.width());
+      console.log("let me see", progressBar.width());
       gsap.to(progressBar, {
         width: "0%",
         duration: 3,
         ease: "power2.out",
         onStart: () => {
           progressBar.removeClass("animate-slide-left");
-
         },
         onComplete: () => {
           progressBar.removeClass("bg-yellowTheme").addClass("bg-white");
