@@ -181,23 +181,6 @@ jQuery(document).ready(function ($) {
   // Function to update the prices in the modal based on the selected currency
   function updatePrices() {
     try {
-      $(".feature:checked, .package-input:checked").each(function () {
-        const usdPrice = $(this).data("usd");
-
-        if (typeof usdPrice === "undefined") {
-          console.error("Error in updatePrices: 'usdPrice' is undefined");
-          return; // Skip this item if usdPrice is undefined
-        }
-
-        const price = parseFloat(usdPrice);
-        const convertedPrice = convertCurrency(price, currency);
-
-        $(this)
-          .closest(".feature-item, .plan-item")
-          .find("label")
-          .text(`${convertedPrice} ${currency}`);
-      });
-
       // Only update the total price
       updateTotalPrice();
     } catch (error) {
@@ -205,24 +188,25 @@ jQuery(document).ready(function ($) {
     }
   }
 
-
   function updateSummary() {
     try {
       const { summaryItems, total } = calculateTotal();
       const summaryContent = $(".modal .text-left");
 
-      // Clear existing summary items (not total)
+      // Clear existing summary items
       summaryContent.empty();
 
-      // Add summary items dynamically (without prices)
-      summaryItems.forEach(({ feature }, index) => {
+      // Add summary items dynamically (with prices)
+      summaryItems.forEach(({ feature, price }, index) => {
         const bgClass =
           index % 2 === 0
             ? "bg-[#0061FF] bg-opacity-[29%]"
             : "bg-blueTheme bg-opacity-[11%]";
+        const convertedPrice = convertCurrency(price, currency);
         summaryContent.append(
           `<p class="flex justify-between items-center ${bgClass} text-black px-4 py-2">
-            <span>${feature}</span>
+          <span>${feature}</span>
+          <span>${convertedPrice} ${currency}</span>
         </p>`
         );
       });
