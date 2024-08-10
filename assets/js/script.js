@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
 
   let currency = "USD";
   const summarySection = $(".summary-section");
-  const $pagesInput = $("#pages-input");
+  const $pagesInput = $(".pages-input");
   const $modal = $(".modal");
   const $closeModal = $(".close-modal");
   const $detailsButton = $(".details");
@@ -75,18 +75,7 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  $(".calculate-container-button").click((event) => {
-    event.preventDefault();
-    let numberOfPages = parseInt($("#pages-input").val(), 10);
-
-    if (isNaN(numberOfPages) || numberOfPages <= 0) {
-      alert("Please enter a valid number of pages.");
-      return;
-    }
-
-    updateSummary();
-    showSummary();
-  });
+  
 
   $("select.currency-select").change(function () {
     try {
@@ -182,11 +171,12 @@ jQuery(document).ready(function ($) {
     try {
       const { total } = calculateTotal();
       const totalPrice = $(".total");
-      totalPrice.text(`Total: ${total.toFixed(2)} ${currency}`);
+      totalPrice.text(`Total: ${convertCurrency(total, currency)} ${currency}`);
     } catch (error) {
       console.error("Error in updateTotalPrice:", error.message);
     }
   }
+
 
   // Function to update the prices in the modal based on the selected currency
   function updatePrices() {
@@ -218,9 +208,8 @@ jQuery(document).ready(function ($) {
 
   function updateSummary() {
     try {
-      const { summaryItems } = calculateTotal();
+      const { summaryItems, total } = calculateTotal();
       const summaryContent = $(".modal .text-left");
-      const totalPrice = $(".total");
 
       // Clear existing summary items (not total)
       summaryContent.empty();
@@ -233,8 +222,8 @@ jQuery(document).ready(function ($) {
             : "bg-blueTheme bg-opacity-[11%]";
         summaryContent.append(
           `<p class="flex justify-between items-center ${bgClass} text-black px-4 py-2">
-              <span>${feature}</span>
-          </p>`
+            <span>${feature}</span>
+        </p>`
         );
       });
 
@@ -249,28 +238,37 @@ jQuery(document).ready(function ($) {
     }
   }
 
-
-
-
   function calculateTotal() {
     try {
       let total = 0;
       let summaryItems = [];
-      let numberOfPages = parseInt($("#pages-input").val(), 10) || 1;
+      let numberOfPagesInput;
+      if (window.innerWidth < 768) {
+        numberOfPagesInput = $(".pages-input").eq(0).val();
+      } else {
+        numberOfPagesInput = $(".pages-input").eq(1).val();
+      }
+      let numberOfPages = parseInt(numberOfPagesInput, 10);
+
+      if (isNaN(numberOfPages)) {
+        console.error("Invalid number of pages:", numberOfPagesInput);
+        numberOfPages = 1; // Default to 1 if invalid
+      }
+       console.log("Number of Pages:", numberOfPages);
 
       $(".feature:checked, .package-input:checked").each(function () {
         const feature = $(this).data("feature");
         let price = parseFloat($(this).data("usd"));
 
-        if ($(this).attr("id") === "additional-pages") {
-          price *= numberOfPages - 1;
+        // Add $50 for each additional page beyond 8
+        if (numberOfPages > 8) {
+          price += (numberOfPages - 8) * 50;
         }
 
-        price =
-          currency === "USD"
-            ? price
-            : parseFloat(convertCurrency(price, currency));
-        total += price;
+        console.log(price)
+
+        price = currency === "USD" ? price : convertCurrency(price, currency);
+        total += parseFloat(price);
         summaryItems.push({ feature, price });
       });
 
