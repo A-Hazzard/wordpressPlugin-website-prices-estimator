@@ -104,30 +104,11 @@ if (!class_exists('WebsitePriceEstimator')) {
 
     public function display_form(){
         ob_start();
+        
         ?>
           <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
           <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-          <style>
-      @keyframes slideRight {
-        0% {
-          transform: translateX(-100%);
-        }
-        100% {
-          transform: translateX(0);
-        }
-      }
-      .animate-slide-right {
-        animation: slideRight 1s linear forwards;
-      }
-
-      @media(min-width: 1440px) {
-        .step-1 .mountain {
-          width: 50rem;
-        }
-      }
-    </style>
-      
           <!-- Mobile View -->
           <section class="text-left md:hidden relative">
             <header class="bg-blueTheme p-4 header">
@@ -167,12 +148,9 @@ if (!class_exists('WebsitePriceEstimator')) {
                 alt="mountain" 
                 class="w-full h-full" 
               />
-
             </div>
 
-            <div
-              class="px-4 pb-4 mt-3 flex flex-col gap-2 step step-2 absolute hidden"
-            >
+            <div class="px-4 pb-4 mt-3 flex-col gap-2 step step-2 absolute hidden">
               <h3 class="text-h3">SELECT FUNCTIONALITIES</h3>
               <p class="text-grayTheme">
                 From e-commerce capabilities to interactive galleries, pick what you
@@ -361,9 +339,7 @@ if (!class_exists('WebsitePriceEstimator')) {
               </div>
             </div>
 
-            <div
-              class="px-4 pb-4 mt-3 flex flex-col gap-2 step step-3 absolute hidden"
-            >
+            <div class="px-4 pb-4 mt-3 lex-col gap-2 step step-3 absolute hidden">
               <h3 class="text-h3">HOST & MANAGEMENT PLANS</h3>
               <p class="text-grayTheme">
                 From hosting to maintenance, pick the plan that suits your needs.
@@ -431,89 +407,10 @@ if (!class_exists('WebsitePriceEstimator')) {
                 </button>
               </div>
             </div>
-
-            <!-- Modal -->
-            <div
-              class="modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center hidden"
-            >
-              <div
-                class="bg-white w-[95%] md:w-[80%] lg:w-[60%] rounded-md shadow-lg"
-              >
-                <div
-                  class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-t-md"
-                >
-                  <h2 class="text-h2">PRICE SUMMARY</h2>
-                  <button class="close-modal text-2xl font-bold cursor-pointer">
-                    ×
-                  </button>
-                </div>
-                <div class="p-6 flex flex-col items-center">
-                  <p class="text-h3 mb-4">Choose the best options for your needs</p>
-                  <div class="w-full flex flex-col gap-4">
-                    <div
-                      class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-md"
-                    >
-                      <div class="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          class="package-input"
-                          data-usd="45"
-                          data-feature="Web Hosting and Cybersecurity Solutions"
-                        />
-                        <p>
-                          Web Hosting and Cybersecurity Solutions: Starting from $45
-                        </p>
-                      </div>
-                    </div>
-                    <div
-                      class="flex justify-between items-center bg-grayTheme text-black px-4 py-2 rounded-md"
-                    >
-                      <div class="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          class="package-input"
-                          data-usd="34"
-                          data-feature="Contact Form"
-                        />
-                        <p>Contact Form</p>
-                      </div>
-                    </div>
-                    <div
-                      class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-md"
-                    >
-                      <div class="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          class="package-input"
-                          data-usd="46"
-                          data-feature="Image Slider"
-                        />
-                        <p>Image Slider</p>
-                      </div>
-                    </div>
-                    <div
-                      class="flex justify-between items-center bg-grayTheme text-black px-4 py-2 rounded-md"
-                    >
-                      <div class="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          class="package-input"
-                          data-usd="17"
-                          data-feature="Social Media Integration"
-                        />
-                        <p>Social Media Integration</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </section>
 
           <!-- PC View -->
-          <section
-            class="text-left relative hidden md:flex flex-row w-[90%] xl:w-[60%] my-8 mx-auto rounded-md shadow-lg overflow-hidden">
-            
+          <section class="text-left relative hidden md:flex flex-row w-[90%] xl:w-[60%] my-8 mx-auto rounded-md shadow-lg overflow-hidden">
             <!-- LEFT SIDE -->
             <div class="w-1/2 px-8 pt-8 flex flex-col bg-blueTheme relative">
               <h2 class="text-white text-left text-3xl">
@@ -525,14 +422,12 @@ if (!class_exists('WebsitePriceEstimator')) {
                 needs. It's quick, easy, and free
               </p>
 
-                <img
+              <img
                   src="<?php echo plugins_url('assets/images/staircase.svg', __FILE__); ?>" 
-                  alt="mountain" 
-                  class="w-full h-full" 
-                />
-
+                  alt="staircase" 
+                  class="w-[60%] absolute bottom-0"
+              />
             </div>
-
 
             <!-- RIGHT SIDE -->
             <div class="step step-1 transition-height duration-300 ease-in-out">
@@ -556,15 +451,17 @@ if (!class_exists('WebsitePriceEstimator')) {
                 </button>
               </div>
 
-            <img
-              src="<?php echo plugins_url('assets/images/Mountain.svg', __FILE__); ?>"
-              alt="mountain"
-              class="w-full h-full"
-            />
-
+              <img
+                src="<?php echo plugins_url('assets/images/Mountain.svg', __FILE__); ?>"
+                alt="mountain"
+                class="mountain w-full xl:w-[40rem] h-full object-contain"
+              />
+            
             </div>
 
-            <div class="px-4 pb-4 mt-3 gap-2 step step-2 absolute right-0 top-0 bottom-0 w-1/2 hidden transition-height duration-2000 ease-in-out">
+            <div
+              class="px-4 pb-4 mt-3 gap-2 step step-2 absolute right-0 top-0 bottom-0 w-1/2 hidden transition-height duration-2000 ease-in-out"
+            >
               <h3 class="text-h3">SELECT FUNCTIONALITIES</h3>
               <p class="text-grayTheme">
                 From e-commerce capabilities to interactive galleries, pick what you
@@ -760,7 +657,9 @@ if (!class_exists('WebsitePriceEstimator')) {
               </div>
             </div>
 
-            <div class="px-4 pb-4 mt-3 gap-2 step step-3 absolute right-0 top-0 bottom-0 w-1/2 hidden transition-height duration-2000 ease-in-out">
+            <div
+              class="px-4 pb-4 mt-3 gap-2 step step-3 absolute right-0 top-0 bottom-0 w-1/2 hidden transition-height duration-2000 ease-in-out"
+            >
               <h3 class="text-h3">HOST & MANAGEMENT PLANS</h3>
               <p class="text-grayTheme">
                 From hosting to maintenance, pick the plan that suits your needs.
@@ -828,87 +727,224 @@ if (!class_exists('WebsitePriceEstimator')) {
                 </button>
               </div>
             </div>
+          </section>
 
-
-            <!-- SUMMARY MODAL -->
-            <div
-              class="modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center hidden"
-            >
-              <div
-                class="bg-white w-[95%] md:w-[80%] lg:w-[60%] rounded-md shadow-lg"
-              >
-                <div
-                  class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-t-md"
+          <!-- SUMMARY MODAL -->
+          <div class="modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div class="bg-white w-[95%] md:w-[60%] rounded-md shadow-lg">
+              <div class="flex items-center px-4 py-2 rounded-t-md">
+                <h2 class="text-h2 text-xl font-bold text-center flex-grow">
+                  PRICE SUMMARY
+                </h2>
+                <button
+                  class="close-modal ml-auto text-lg font-bold cursor-pointer flex items-center"
                 >
-                  <h2 class="text-h2">PRICE SUMMARY</h2>
-                  <button class="close-modal text-2xl font-bold cursor-pointer">
-                    ×
-                  </button>
-                </div>
-                <div class="p-6 flex flex-col items-center">
-                  <p class="text-h3 mb-4">Choose the best options for your needs</p>
-                  <div class="w-full flex flex-col gap-4">
-                    <div
-                      class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-md"
+                  x
+                </button>
+              </div>
+
+              <div class="px-6 pb-6 flex flex-col items-center">
+                <p class="text-sm text-center text-grayTheme mb-4">
+                  Choose the best options for your needs
+                </p>
+
+                <div class="lg:w-3/4">
+                  <div
+                    class="text-left text-sm w-full flex flex-col max-h-[60vh] overflow-y-auto"
+                  >
+                    <p
+                      class="rounded-tl-md rounded-tr-md relative flex justify-between items-center bg-[#0061FF] bg-opacity-[29%] px-4 py-2 text-black"
                     >
-                      <div class="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          class="package-input"
-                          data-usd="45"
-                          data-feature="Web Hosting and Cybersecurity Solutions"
-                        />
-                        <p>
-                          Web Hosting and Cybersecurity Solutions: Starting from $45
-                        </p>
-                      </div>
-                    </div>
-                    <div
-                      class="flex justify-between items-center bg-grayTheme text-black px-4 py-2 rounded-md"
+                      <span class="relative z-10"
+                        >Web Hosting and Cybersecurity Solutions: Starting from
+                        $45</span
+                      >
+                      <span
+                        class="absolute inset-0 bg-[#3A71CA] bg-opacity-[29%]"
+                      ></span>
+                    </p>
+
+                    <p
+                      class="flex justify-between items-center bg-blueTheme bg-opacity-[11%] text-black px-4 py-2"
                     >
-                      <div class="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          class="package-input"
-                          data-usd="34"
-                          data-feature="Contact Form"
-                        />
-                        <p>Contact Form</p>
-                      </div>
-                    </div>
-                    <div
-                      class="flex justify-between items-center bg-blueTheme text-white px-4 py-2 rounded-md"
+                      Contact Form
+                    </p>
+                    <p
+                      class="relative flex justify-between items-center bg-[#0061FF] bg-opacity-[29%] px-4 py-2 text-black"
                     >
-                      <div class="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          class="package-input"
-                          data-usd="46"
-                          data-feature="Image Slider"
-                        />
-                        <p>Image Slider</p>
-                      </div>
-                    </div>
-                    <div
-                      class="flex justify-between items-center bg-grayTheme text-black px-4 py-2 rounded-md"
+                      <span class="relative z-10"
+                        >Web Hosting and Cybersecurity Solutions: Starting from
+                        $45</span
+                      >
+                      <span
+                        class="absolute inset-0 bg-[#3A71CA] bg-opacity-[29%]"
+                      ></span>
+                    </p>
+
+                    <p
+                      class="flex justify-between items-center bg-blueTheme bg-opacity-[11%] text-black px-4 py-2"
                     >
-                      <div class="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          class="package-input"
-                          data-usd="17"
-                          data-feature="Social Media Integration"
-                        />
-                        <p>Social Media Integration</p>
-                      </div>
-                    </div>
+                      Contact Form
+                    </p>
+                    <p
+                      class="relative flex justify-between items-center bg-[#0061FF] bg-opacity-[29%] px-4 py-2 text-black"
+                    >
+                      <span class="relative z-10"
+                        >Web Hosting and Cybersecurity Solutions: Starting from
+                        $45</span
+                      >
+                      <span
+                        class="absolute inset-0 bg-[#3A71CA] bg-opacity-[29%]"
+                      ></span>
+                    </p>
+
+                    <p
+                      class="flex justify-between items-center bg-blueTheme bg-opacity-[11%] text-black px-4 py-2"
+                    >
+                      Contact Form
+                    </p>
+                    <p
+                      class="relative flex justify-between items-center bg-[#0061FF] bg-opacity-[29%] px-4 py-2 text-black"
+                    >
+                      <span class="relative z-10"
+                        >Web Hosting and Cybersecurity Solutions: Starting from
+                        $45</span
+                      >
+                      <span
+                        class="absolute inset-0 bg-[#3A71CA] bg-opacity-[29%]"
+                      ></span>
+                    </p>
+
+                    <p
+                      class="flex justify-between items-center bg-blueTheme bg-opacity-[11%] text-black px-4 py-2"
+                    >
+                      Contact Form
+                    </p>
+                    <p
+                      class="relative flex justify-between items-center bg-[#0061FF] bg-opacity-[29%] px-4 py-2 text-black"
+                    >
+                      <span class="relative z-10"
+                        >Web Hosting and Cybersecurity Solutions: Starting from
+                        $45</span
+                      >
+                      <span
+                        class="absolute inset-0 bg-[#3A71CA] bg-opacity-[29%]"
+                      ></span>
+                    </p>
+
+                    <p
+                      class="flex justify-between items-center bg-blueTheme bg-opacity-[11%] text-black px-4 py-2"
+                    >
+                      Contact Form
+                    </p>
+                    <p
+                      class="relative flex justify-between items-center bg-[#0061FF] bg-opacity-[29%] px-4 py-2 text-black"
+                    >
+                      <span class="relative z-10"
+                        >Web Hosting and Cybersecurity Solutions: Starting from
+                        $45</span
+                      >
+                      <span
+                        class="absolute inset-0 bg-[#3A71CA] bg-opacity-[29%]"
+                      ></span>
+                    </p>
+
+                    <p
+                      class="flex justify-between items-center bg-blueTheme bg-opacity-[11%] text-black px-4 py-2"
+                    >
+                      Contact Form
+                    </p>
+                    <p
+                      class="relative flex justify-between items-center bg-[#0061FF] bg-opacity-[29%] px-4 py-2 text-black"
+                    >
+                      <span class="relative z-10"
+                        >Web Hosting and Cybersecurity Solutions: Starting from
+                        $45</span
+                      >
+                      <span
+                        class="absolute inset-0 bg-[#3A71CA] bg-opacity-[29%]"
+                      ></span>
+                    </p>
+
+                    <p
+                      class="flex justify-between items-center bg-blueTheme bg-opacity-[11%] text-black px-4 py-2"
+                    >
+                      Contact Form
+                    </p>
+                    <p
+                      class="relative flex justify-between items-center bg-[#0061FF] bg-opacity-[29%] px-4 py-2 text-black"
+                    >
+                      <span class="relative z-10"
+                        >Web Hosting and Cybersecurity Solutions: Starting from
+                        $45</span
+                      >
+                      <span
+                        class="absolute inset-0 bg-[#3A71CA] bg-opacity-[29%]"
+                      ></span>
+                    </p>
+
+                    <p
+                      class="flex justify-between items-center bg-blueTheme bg-opacity-[11%] text-black px-4 py-2"
+                    >
+                      Contact Form
+                    </p>
+                    <p
+                      class="relative flex justify-between items-center bg-[#0061FF] bg-opacity-[29%] px-4 py-2 text-black"
+                    >
+                      <span class="relative z-10"
+                        >Web Hosting and Cybersecurity Solutions: Starting from
+                        $45</span
+                      >
+                      <span
+                        class="absolute inset-0 bg-[#3A71CA] bg-opacity-[29%]"
+                      ></span>
+                    </p>
+
+                    <p
+                      class="flex justify-between items-center bg-blueTheme bg-opacity-[11%] text-black px-4 py-2"
+                    >
+                      Contact Form
+                    </p>
+                  </div>
+
+                  <div
+                    class="mt-3 w-full flex flex-row justify-between items-center gap-3"
+                  >
+                    <p class="text-lg text-left text-[#3BA042]">Total: $134.45</p>
+
+                    <button
+                      class="bg-yellowTheme text-white shadow-md p-2 rounded-md"
+                    >
+                      Book Consultation
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
+          <style>
+            @keyframes slideRight {
+              0% {
+                transform: translateX(-100%);
+              }
+              100% {
+                transform: translateX(0);
+              }
+            }
+            .animate-slide-right {
+              animation: slideRight 1s linear forwards;
+            }
+            .modal {
+                display: none;
+            }
 
-          </section>
+            @media (min-width: 1440px) {
+              .step-1 .mountain {
+                width: 50rem;
+              }
+            }
+          </style>
 
           <script type="module" src="<?php echo plugins_url('assets/js/script.js', __FILE__); ?>"></script>
         <?php
