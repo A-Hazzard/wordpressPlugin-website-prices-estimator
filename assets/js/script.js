@@ -22,10 +22,10 @@ jQuery(document).ready(function ($) {
 
   // Modal button handlers
   $detailsButton.on("click", function () {
-    $modal.removeClass("hidden");
+    $modal.css({display: "flex"});
   });
   $closeModal.on("click", function () {
-    $modal.addClass("hidden");
+    $modal.css({display: "none"});
   });
 
   // Event handlers for navigation buttons
@@ -112,7 +112,8 @@ jQuery(document).ready(function ($) {
 
         steps[stepNumber].show().css({
           opacity: 0,
-          display: "block",
+          display: "flex",
+          flexDirection: "column",
           scale: 1,
           rotation: 0,
           height: "auto",
@@ -158,6 +159,7 @@ jQuery(document).ready(function ($) {
         });
       },
     });
+    
 
     $(".step").removeClass("active");
     $(`.step-${stepNumber}`).addClass("active");
