@@ -1,19 +1,31 @@
 import { getStepHeader } from "./headerTemplates.js";
 
 jQuery(document).ready(function ($) {
-  // Default currency and initial step
+  let currentStep = 1;
+  let prevStep = 1; 
+
   let currency = "USD";
-  let currentStep = 1; // Initial step
-  let prevStep = 1; // Initialize prevStep variable
-
-
   const summarySection = $(".summary-section");
   const $pagesInput = $("#pages-input");
   const $modal = $(".modal");
   const $closeModal = $(".close-modal");
   const $detailsButton = $(".details");
 
-  // Sanitize pages input
+  const steps = {
+    1: $(".step-1"),
+    2: $(".step-2"),
+    3: $(".step-3"),
+  };
+
+  // Exchange rates for different currencies
+  const exchangeRates = {
+    USD: 1, JMD: 150.85, CAD: 1.37, EUR: 0.93, 
+    GBP: 0.77, DOP: 55.35, HTG: 137.58,
+    BBD: 2, BZD: 2.01, GYD: 211.55, TTD: 6.79, 
+    AWG: 1.8, BMD: 1, KYD: 0.82, ANG: 1.79, 
+    XCD: 2.7, BSD: 1, CUP: 24.0, CUC: 1
+  }
+    // Sanitize pages input
   $pagesInput.on("input", function () {
     $(this).val(function (_, value) {
       return value.replace(/\D/g, "");
@@ -33,12 +45,10 @@ jQuery(document).ready(function ($) {
   // Event handlers for navigation buttons
   $(".first-next-step").click(function () {
     showStep(2);
-   
   });
 
   $(".next-step").click(function () {
     if (currentStep < 3) {
-      // Assuming 3 is the maximum step
       showStep(currentStep + 1);
     }
   });
@@ -63,8 +73,7 @@ jQuery(document).ready(function ($) {
     showSummary();
   });
 
-  // Event handler for currency selection change
-  $('select[name="currency"]').change(function () {
+  $('select[name="currency"]').change(() => {
     try {
       currency = $(this).val();
       updatePrices();
@@ -73,34 +82,7 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  const steps = {
-    1: $(".step-1"),
-    2: $(".step-2"),
-    3: $(".step-3"),
-  };
-
-  // Exchange rates for different currencies
-  const exchangeRates = {
-    USD: 1,
-    JMD: 150.85,
-    CAD: 1.37,
-    EUR: 0.93,
-    GBP: 0.77,
-    DOP: 55.35,
-    HTG: 137.58,
-    BBD: 2,
-    BZD: 2.01,
-    GYD: 211.55,
-    TTD: 6.79,
-    AWG: 1.8,
-    BMD: 1,
-    KYD: 0.82,
-    ANG: 1.79,
-    XCD: 2.7,
-    BSD: 1,
-    CUP: 24.0,
-    CUC: 1,
-  };
+  
 
   function showStep(stepNumber) {
     if (stepNumber < 1 || stepNumber > Object.keys(steps).length) return;
@@ -167,12 +149,10 @@ jQuery(document).ready(function ($) {
     $(`.step-${stepNumber}`).addClass("active");
   }
 
-  // Show the summary section
   function showSummary() {
     summarySection.removeClass("hidden");
   }
 
-  // Convert currency
   function convertCurrency(amount, toCurrency) {
     try {
       if (!exchangeRates[toCurrency]) {
@@ -185,7 +165,6 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  // Update prices based on selected currency
   function updatePrices() {
     try {
       $(".feature:checked, .package-input:checked").each(function () {
@@ -203,7 +182,6 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  // Update summary section
   function updateSummary() {
     try {
       const { total, summaryItems } = calculateTotal();
@@ -224,7 +202,6 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  // Calculate total price
   function calculateTotal() {
     try {
       let total = 0;
@@ -251,7 +228,6 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  // Update header based on current step
   // Update header based on current step
   function updateHeader() {
     const header = $(".header");
