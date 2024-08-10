@@ -26,41 +26,41 @@ jQuery(document).ready(function ($) {
     XCD: 2.7, BSD: 1, CUP: 24.0, CUC: 1
   }
     // Sanitize pages input
-  $pagesInput.on("input", function () {
+  $pagesInput.on("input", () => {
     $(this).val(function (_, value) {
       return value.replace(/\D/g, "");
     });
   });
 
   // Modal button handlers
-  $detailsButton.on("click", function () {
+  $detailsButton.on("click", () => {
     $modal.css({display: "flex"});
     $('html, body').css('overflow', 'hidden');
   });
-  $closeModal.on("click", function () {
+  $closeModal.on("click", () => {
     $modal.css({display: "none"});
     $('html, body').css('overflow', '');
   });
 
   // Event handlers for navigation buttons
-  $(".first-next-step").click(function () {
+  $(".first-next-step").click(() => {
     showStep(2);
   });
 
-  $(".next-step").click(function () {
+  $(".next-step").click(() => {
     if (currentStep < 3) {
       showStep(currentStep + 1);
     }
   });
 
-  $(".previous-step").click(function (event) {
+  $(".previous-step").click((event) => {
     event.preventDefault();
     if (currentStep > 1) {
       showStep(currentStep - 1);
     }
   });
 
-  $(".calculate-container-button").click(function (event) {
+  $(".calculate-container-button").click((event) => {
     event.preventDefault();
     let numberOfPages = parseInt($("#pages-input").val(), 10);
 
@@ -78,7 +78,7 @@ jQuery(document).ready(function ($) {
       currency = $(this).val();
       updatePrices();
     } catch (error) {
-      console.error("Error in currency change handler:", error);
+      console.error("Error in currency change handler:", error.message);
     }
   });
 
@@ -91,7 +91,7 @@ jQuery(document).ready(function ($) {
       height: 'auto',
       duration: 0.1,
       ease: "power2.out",
-      onComplete: function () {
+      onComplete: () => {
         steps[currentStep].hide();
 
         steps[stepNumber].show().css({
@@ -117,7 +117,7 @@ jQuery(document).ready(function ($) {
           duration: 0.5,
           height: "auto",
           ease: "power2.out",
-          onComplete: function () {
+          onComplete: () => {
             prevStep = currentStep;
             currentStep = stepNumber;
             updateHeader(); // Call the updateHeader function
@@ -149,9 +149,7 @@ jQuery(document).ready(function ($) {
     $(`.step-${stepNumber}`).addClass("active");
   }
 
-  function showSummary() {
-    summarySection.removeClass("hidden");
-  }
+  function showSummary() { summarySection.removeClass("hidden"); }
 
   function convertCurrency(amount, toCurrency) {
     try {
@@ -160,14 +158,14 @@ jQuery(document).ready(function ($) {
       }
       return (amount * exchangeRates[toCurrency]).toFixed(2);
     } catch (error) {
-      console.error("Error in convertCurrency:", error);
+      console.error("Error in convertCurrency:", error.message);
       return amount.toFixed(2);
     }
   }
 
   function updatePrices() {
     try {
-      $(".feature:checked, .package-input:checked").each(function () {
+      $(".feature:checked, .package-input:checked").each(() => {
         const usdPrice = $(this).data("usd");
         const convertedPrice = convertCurrency(usdPrice, currency);
         $(this)
@@ -178,7 +176,7 @@ jQuery(document).ready(function ($) {
 
       updateSummary();
     } catch (error) {
-      console.error("Error in updatePrices:", error);
+      console.error("Error in updatePrices:", error.message);
     }
   }
 
@@ -198,7 +196,7 @@ jQuery(document).ready(function ($) {
 
       summarySection.removeClass("hidden");
     } catch (error) {
-      console.error("Error in updateSummary:", error);
+      console.error("Error in updateSummary:", error.message);
     }
   }
 
@@ -208,7 +206,7 @@ jQuery(document).ready(function ($) {
       let summaryItems = [];
       let numberOfPages = parseInt($("#number-of-pages").val(), 10);
 
-      $(".feature:checked, .package-input:checked").each(function () {
+      $(".feature:checked, .package-input:checked").each(() => {
         const feature = $(this).data("feature");
         let price = parseFloat($(this).data("usd"));
 
@@ -223,7 +221,7 @@ jQuery(document).ready(function ($) {
 
       return { total, summaryItems };
     } catch (error) {
-      console.error("Error in calculateTotal:", error);
+      console.error("Error in calculateTotal:", error.message);
       return { total: 0, summaryItems: [] };
     }
   }
