@@ -206,7 +206,6 @@ jQuery(document).ready(function ($) {
         summaryContent.append(
           `<p class="flex justify-between items-center ${bgClass} text-black px-4 py-2">
           <span>${feature}</span>
-          <span>${convertedPrice} ${currency}</span>
         </p>`
         );
       });
@@ -224,42 +223,52 @@ jQuery(document).ready(function ($) {
 
   function calculateTotal() {
     try {
-      let total = 0;
+      let basePagesCost = 0;
+      let featuresCost = 0;
       let summaryItems = [];
-      let numberOfPagesInput;
-      if (window.innerWidth < 768) {
-        numberOfPagesInput = $(".pages-input").eq(0).val();
+
+      // Get number of pages
+      let numberOfPagesInput =
+        window.innerWidth < 768
+          ? $(".pages-input").eq(0).val()
+          : $(".pages-input").eq(1).val();
+      let numberOfPages = parseInt(numberOfPagesInput, 10) || 1;
+
+      // Calculate base pages cost
+      if (numberOfPages >= 1 && numberOfPages <= 3) {
+        basePagesCost = 250;
+      } else if (numberOfPages <= 6) {
+        basePagesCost = 350;
+      } else if (numberOfPages <= 9) {
+        basePagesCost = 450;
       } else {
-        numberOfPagesInput = $(".pages-input").eq(1).val();
+        basePagesCost = 450 + (numberOfPages - 9) * 50;
       }
-      let numberOfPages = parseInt(numberOfPagesInput, 10);
 
-      if (isNaN(numberOfPages)) {
-        console.error("Invalid number of pages:", numberOfPagesInput);
-        numberOfPages = 1; // Default to 1 if invalid
-      }
-       console.log("Number of Pages:", numberOfPages);
-
+      // Calculate features cost
       $(".feature:checked, .package-input:checked").each(function () {
         const feature = $(this).data("feature");
         let price = parseFloat($(this).data("usd"));
-
-        // Add $50 for each additional page beyond 8
-        if (numberOfPages > 8) {
-          price += (numberOfPages - 8) * 50;
-        }
-
-        console.log(price)
-
-        price = currency === "USD" ? price : convertCurrency(price, currency);
-        total += parseFloat(price);
+        featuresCost += price;
         summaryItems.push({ feature, price });
       });
 
-      return { total, summaryItems };
+      // Total cost is the sum of base pages cost and features cost
+      let total = basePagesCost + featuresCost;
+
+      // Convert to selected currency if not USD
+      if (currency !== "USD") {
+        total = convertCurrency(total, currency);
+        summaryItems = summaryItems.map((item) => ({
+          ...item,
+          price: convertCurrency(item.price, currency),
+        }));
+      }
+
+      return { total, summaryItems, numberOfPages };
     } catch (error) {
       console.error("Error in calculateTotal:", error.message);
-      return { total: 0, summaryItems: [] };
+      return { total: 0, summaryItems: [], numberOfPages: 1 };
     }
   }
 
