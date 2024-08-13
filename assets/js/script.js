@@ -75,8 +75,6 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  
-
   $("select.currency-select").change(function () {
     try {
       currency = $(this).val();
@@ -121,7 +119,7 @@ jQuery(document).ready(function ($) {
           onComplete: () => {
             prevStep = currentStep;
             currentStep = stepNumber;
-            updateHeader(); // Call the updateHeader function
+            updateHeader();
           },
         });
 
@@ -193,19 +191,17 @@ jQuery(document).ready(function ($) {
     }
   }
 
-
   // Function to update the total price in the modal
   function updateTotalPrice() {
     try {
       const { total } = calculateTotal();
-      console.log(total)
+      console.log(total);
       const totalPrice = $(".total");
       totalPrice.text(`Total: ${total} ${currency}`);
     } catch (error) {
       console.error("Error in updateTotalPrice:", error.message);
     }
   }
-
 
   // Function to update the prices in the modal based on the selected currency
   function updatePrices() {
@@ -227,16 +223,18 @@ jQuery(document).ready(function ($) {
 
       // Add summary items dynamically (with prices)
       summaryItems.forEach(({ feature, price }, index) => {
-        const bgClass =
-          index % 2 === 0
-            ? "bg-[#0061FF] bg-opacity-[29%]"
-            : "bg-blueTheme bg-opacity-[11%]";
+        const bgColor = index % 2 === 0 ? "rgba(0, 97, 255, 0.29)" : "rgba(58, 113, 202, 0.11)";
         const convertedPrice = convertCurrency(price, currency);
-        summaryContent.append(
-          `<p class="flex justify-between items-center ${bgClass} text-black px-4 py-2">
-          <span>${feature}</span>
-        </p>`
+
+        const summaryItem = $("<p>")
+          .addClass("flex justify-between items-center px-4 py-2")
+          .css("background-color", bgColor);
+
+        summaryItem.append(
+          $("<span>").addClass("text-black opacity-100").text(feature)
         );
+
+        summaryContent.append(summaryItem);
       });
 
       // Update total price
@@ -264,7 +262,7 @@ jQuery(document).ready(function ($) {
       let numberOfPages = parseInt(numberOfPagesInput, 10) || 1;
 
       // Calculate base pages cost
-      if (numberOfPages >= 1 && numberOfPages <= 3) {
+      if (numberOfPages <= 3) {
         basePagesCost = 250;
       } else if (numberOfPages <= 6) {
         basePagesCost = 350;
@@ -282,8 +280,8 @@ jQuery(document).ready(function ($) {
         summaryItems.push({ feature, price });
       });
 
-      // Total cost is the sum of base pages cost and features cost
-      let total = basePagesCost + featuresCost;
+      // Total cost is 0 if featuresCost is 0, otherwise it's the sum of base pages cost and features cost
+      let total = featuresCost === 0 || "" ? 0 : basePagesCost + featuresCost;
 
       // Convert to selected currency if not USD
       if (currency !== "USD") {
@@ -301,17 +299,16 @@ jQuery(document).ready(function ($) {
     }
   }
 
-
   // Update header based on current step
   function updateHeader() {
     const header = $(".header");
 
     // Update the header content
-      if (window.innerWidth < 768) {
-          header.html(getStepHeader(currentStep));
-      } else {
-          header.html(getMobileStepHeader(currentStep));
-      }
+    if (window.innerWidth < 768) {
+      header.html(getStepHeader(currentStep));
+    } else {
+      header.html(getMobileStepHeader(currentStep));
+    }
     // Add GSAP animation to the header content, excluding the number 1 and 2
     const headerContent = header.find("*:not(.w-8, .h-8)");
     gsap.fromTo(
@@ -322,16 +319,16 @@ jQuery(document).ready(function ($) {
 
     // Update the progress bar
     const progressBar = header.find(".bg-yellowTheme:not(.w-8)");
-    
-    if (currentStep === 2 && prevStep == 1)progressBar.css("width", "0%");
-    
+
+    if (currentStep === 2 && prevStep == 1) progressBar.css("width", "0%");
     else if (currentStep === 3 && prevStep == 2) {
-        progressBar.css("width", "0%");
-        gsap.to(progressBar, {
-          width: "100%",
-          duration: 3,
-          ease: "power2.out",
-          onStart: () => progressBar.removeClass("bg-white").addClass("bg-yellowTheme"),
+      progressBar.css("width", "0%");
+      gsap.to(progressBar, {
+        width: "100%",
+        duration: 3,
+        ease: "power2.out",
+        onStart: () =>
+          progressBar.removeClass("bg-white").addClass("bg-yellowTheme"),
       });
     } else if (currentStep === 2 && prevStep === 3) {
       progressBar.css("width", "100%");
@@ -341,11 +338,9 @@ jQuery(document).ready(function ($) {
         duration: 3,
         ease: "power2.out",
         onStart: () => progressBar.removeClass("animate-slide-left"),
-        onComplete: () => progressBar.removeClass("bg-yellowTheme").addClass("bg-white"),
+        onComplete: () =>
+          progressBar.removeClass("bg-yellowTheme").addClass("bg-white"),
       });
     }
   }
-
-
-
 });
