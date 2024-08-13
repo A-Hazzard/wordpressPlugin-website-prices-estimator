@@ -20,24 +20,24 @@ jQuery(document).ready(function ($) {
   // Exchange rates for different currencies
   const exchangeRates = {
     USD: 1,
-    JMD: 150.85,
-    CAD: 1.37,
-    EUR: 0.93,
-    GBP: 0.77,
-    DOP: 55.35,
-    HTG: 137.58,
-    BBD: 2,
-    BZD: 2.01,
-    GYD: 211.55,
-    TTD: 6.79,
-    AWG: 1.8,
-    BMD: 1,
-    KYD: 0.82,
+    JMD: 153.82,
+    CAD: 1.34,
+    EUR: 0.91,
+    GBP: 0.79,
+    DOP: 56.5,
+    HTG: 133.33,
+    BBD: 2.0,
+    BZD: 2.0,
+    GYD: 208.33,
+    TTD: 6.76,
+    AWG: 1.79,
+    BMD: 1.0,
+    KYD: 0.83,
     ANG: 1.79,
     XCD: 2.7,
-    BSD: 1,
+    BSD: 1.0,
     CUP: 24.0,
-    CUC: 1,
+    CUC: 1.0,
   };
   // Sanitize pages input
   $pagesInput.on("input", () => {
@@ -158,7 +158,35 @@ jQuery(document).ready(function ($) {
       if (!exchangeRates[toCurrency]) {
         throw new Error(`Invalid currency: ${toCurrency}`);
       }
-      return (amount * exchangeRates[toCurrency]).toFixed(2);
+
+      // Perform the calculation with higher precision
+      const result = amount * exchangeRates[toCurrency];
+
+      // Define appropriate decimal places for each currency
+      const decimalPlaces = {
+        USD: 2,
+        JMD: 2,
+        CAD: 2,
+        EUR: 2,
+        GBP: 2,
+        DOP: 2,
+        HTG: 2,
+        BBD: 2,
+        BZD: 2,
+        GYD: 2,
+        TTD: 2,
+        AWG: 2,
+        BMD: 2,
+        KYD: 2,
+        ANG: 2,
+        XCD: 2,
+        BSD: 2,
+        CUP: 2,
+        CUC: 2,
+      };
+
+      // Round to the appropriate number of decimal places
+      return result.toFixed(decimalPlaces[toCurrency] || 2);
     } catch (error) {
       console.error("Error in convertCurrency:", error.message);
       return amount.toFixed(2); // Return the amount as is if conversion fails
@@ -170,8 +198,9 @@ jQuery(document).ready(function ($) {
   function updateTotalPrice() {
     try {
       const { total } = calculateTotal();
+      console.log(total)
       const totalPrice = $(".total");
-      totalPrice.text(`Total: ${convertCurrency(total, currency)} ${currency}`);
+      totalPrice.text(`Total: ${total} ${currency}`);
     } catch (error) {
       console.error("Error in updateTotalPrice:", error.message);
     }
@@ -206,7 +235,6 @@ jQuery(document).ready(function ($) {
         summaryContent.append(
           `<p class="flex justify-between items-center ${bgClass} text-black px-4 py-2">
           <span>${feature}</span>
-          <span>${convertedPrice} ${currency}</span>
         </p>`
         );
       });
@@ -224,42 +252,52 @@ jQuery(document).ready(function ($) {
 
   function calculateTotal() {
     try {
-      let total = 0;
+      let basePagesCost = 0;
+      let featuresCost = 0;
       let summaryItems = [];
-      let numberOfPagesInput;
-      if (window.innerWidth < 768) {
-        numberOfPagesInput = $(".pages-input").eq(0).val();
+
+      // Get number of pages
+      let numberOfPagesInput =
+        window.innerWidth < 768
+          ? $(".pages-input").eq(0).val()
+          : $(".pages-input").eq(1).val();
+      let numberOfPages = parseInt(numberOfPagesInput, 10) || 1;
+
+      // Calculate base pages cost
+      if (numberOfPages >= 1 && numberOfPages <= 3) {
+        basePagesCost = 250;
+      } else if (numberOfPages <= 6) {
+        basePagesCost = 350;
+      } else if (numberOfPages <= 8) {
+        basePagesCost = 400;
       } else {
-        numberOfPagesInput = $(".pages-input").eq(1).val();
+        basePagesCost = 450 + (numberOfPages - 9) * 50;
       }
-      let numberOfPages = parseInt(numberOfPagesInput, 10);
 
-      if (isNaN(numberOfPages)) {
-        console.error("Invalid number of pages:", numberOfPagesInput);
-        numberOfPages = 1; // Default to 1 if invalid
-      }
-       console.log("Number of Pages:", numberOfPages);
-
+      // Calculate features cost
       $(".feature:checked, .package-input:checked").each(function () {
         const feature = $(this).data("feature");
         let price = parseFloat($(this).data("usd"));
-
-        // Add $50 for each additional page beyond 8
-        if (numberOfPages > 8) {
-          price += (numberOfPages - 8) * 50;
-        }
-
-        console.log(price)
-
-        price = currency === "USD" ? price : convertCurrency(price, currency);
-        total += parseFloat(price);
+        featuresCost += price;
         summaryItems.push({ feature, price });
       });
 
-      return { total, summaryItems };
+      // Total cost is the sum of base pages cost and features cost
+      let total = basePagesCost + featuresCost;
+
+      // Convert to selected currency if not USD
+      if (currency !== "USD") {
+        total = convertCurrency(total, currency);
+        summaryItems = summaryItems.map((item) => ({
+          ...item,
+          price: convertCurrency(item.price, currency),
+        }));
+      }
+
+      return { total, summaryItems, numberOfPages };
     } catch (error) {
       console.error("Error in calculateTotal:", error.message);
-      return { total: 0, summaryItems: [] };
+      return { total: 0, summaryItems: [], numberOfPages: 1 };
     }
   }
 
