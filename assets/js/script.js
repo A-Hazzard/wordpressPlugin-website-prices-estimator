@@ -1,4 +1,3 @@
-import { getStepHeader, getMobileStepHeader } from "./headerTemplates.js";
 
 jQuery(document).ready(function ($) {
   let currentStep = 1;
@@ -75,8 +74,6 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  
-
   $("select.currency-select").change(function () {
     try {
       currency = $(this).val();
@@ -85,6 +82,114 @@ jQuery(document).ready(function ($) {
       console.error("Error in currency change handler:", error.message);
     }
   });
+
+  const getStepHeader = (stepNumber) => {
+    switch (stepNumber) {
+      case 1:
+        return `
+          <h2 class="text-3xl text-white w-[90%]" id="header-title">
+            Take the first step towards your dream project
+          </h2>
+          <br />
+          <p class="text-[#D3D3D3] w-[90%]" id="header-description">
+            Use our price estimator to get a project estimate tailored to your
+            needs. It's quick, easy, and free.
+          </p>
+      `;
+      case 2:
+        return `
+        <p class="text-[#D3D3D3] absolute right-4 text-[0.7rem]">Host & Management</p>
+        <div class="mt-8 z-10 flex items-center justify-between">
+          <div class="flex items-center gap-2 flex-grow">
+            <div
+              class="text-white w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full border border-white"
+            >
+              1
+            </div>
+            <div class="h-1 bg-white w-full relative overflow-hidden">
+              <div class="h-full bg-yellowTheme absolute left-0 top-0 w-0"></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 ml-2">
+            <div
+              class="bg-yellowTheme text-black w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full border border-yellowTheme"
+            >
+              2
+            </div>
+          </div>
+        </div>
+      `;
+      case 3:
+        return `
+        <p class="text-[#D3D3D3] absolute left-8 text-[0.7rem]">Functionalities</p>
+        <div class="mt-8 z-10 flex items-center justify-between">
+          <div class="flex items-center gap-2 flex-grow">
+            <div
+              class="text-white w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full border border-white"
+            >
+              1
+            </div>
+            <div class="h-1 bg-white w-full relative overflow-hidden">
+              <div class="h-full bg-yellowTheme absolute left-0 top-0 w-0"></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 ml-2">
+            <div
+              class="bg-yellowTheme text-black w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full border border-yellowTheme"
+            >
+              2
+            </div>
+          </div>
+        </div>
+      `;
+      default:
+        return "";
+    }
+  };
+
+  const getPcStepHeader = (stepNumber) => {
+    console.log(stepNumber);
+
+    switch (stepNumber) {
+      case 1:
+        return `
+        <h2 class="text-white text-left text-3xl">
+          Take the first step towards your dream project.
+        </h2>
+        <br />
+        <p class="text-left text-[#d3d3d3]">
+          use our price estimator to get a project estimate tailored to your
+          needs. it's quick, easy, and free.
+        </p>
+        <img src="<?php echo plugins_url('assets/images/staircase.svg', __FILE__); ?>" alt="staircase"
+            class="w-[60%] absolute bottom-0" />
+      `;
+      case 2:
+        return `
+        <div class="flex flex-row gap-3 items-center opacity-80">
+          <p class="font-bold bg-yellowTheme flex items-center justify-center w-8 h-8 rounded-full">1</p>
+          <p class="text-white">Functionalities</p>
+        </div>
+        <div class="mt-12 flex flex-row gap-3 items-center">
+          <p class="text-white font-bold flex items-center justify-center w-8 h-8 border-2 rounded-full">2</p>
+          <p class="text-white">Hosting & Management</p>
+        </div>
+      `;
+      case 3:
+        return `
+        <div class="flex flex-row gap-3 items-center">
+          <p class="text-white font-bold flex items-center justify-center w-8 h-8 border-2 rounded-full"><i class="fas fa-check"></i></p>
+          <p class="text-white">Functionalities</p>
+        </div>
+        <div class="mt-12 flex flex-row gap-3 items-center opacity-80">
+          <p class="font-bold bg-yellowTheme flex items-center justify-center w-8 h-8 rounded-full">2</p>
+          <p class="text-white">Hosting & Management</p>
+        </div>
+      `;
+      default:
+        return "";
+    }
+  };
 
   function showStep(stepNumber) {
     if (stepNumber < 1 || stepNumber > Object.keys(steps).length) return;
@@ -121,7 +226,7 @@ jQuery(document).ready(function ($) {
           onComplete: () => {
             prevStep = currentStep;
             currentStep = stepNumber;
-            updateHeader(); // Call the updateHeader function
+            updateHeader();
           },
         });
 
@@ -193,19 +298,17 @@ jQuery(document).ready(function ($) {
     }
   }
 
-
   // Function to update the total price in the modal
   function updateTotalPrice() {
     try {
       const { total } = calculateTotal();
-      console.log(total)
+      console.log(total);
       const totalPrice = $(".total");
       totalPrice.text(`Total: ${total} ${currency}`);
     } catch (error) {
       console.error("Error in updateTotalPrice:", error.message);
     }
   }
-
 
   // Function to update the prices in the modal based on the selected currency
   function updatePrices() {
@@ -227,16 +330,18 @@ jQuery(document).ready(function ($) {
 
       // Add summary items dynamically (with prices)
       summaryItems.forEach(({ feature, price }, index) => {
-        const bgClass =
-          index % 2 === 0
-            ? "bg-[#0061FF] bg-opacity-[29%]"
-            : "bg-blueTheme bg-opacity-[11%]";
+        const bgColor = index % 2 === 0 ? "rgba(0, 97, 255, 0.29)" : "rgba(58, 113, 202, 0.11)";
         const convertedPrice = convertCurrency(price, currency);
-        summaryContent.append(
-          `<p class="flex justify-between items-center ${bgClass} text-black px-4 py-2">
-          <span>${feature}</span>
-        </p>`
+
+        const summaryItem = $("<p>")
+          .addClass("flex justify-between items-center px-4 py-2")
+          .css("background-color", bgColor);
+
+        summaryItem.append(
+          $("<span>").addClass("text-black opacity-100").text(feature)
         );
+
+        summaryContent.append(summaryItem);
       });
 
       // Update total price
@@ -264,7 +369,7 @@ jQuery(document).ready(function ($) {
       let numberOfPages = parseInt(numberOfPagesInput, 10) || 1;
 
       // Calculate base pages cost
-      if (numberOfPages >= 1 && numberOfPages <= 3) {
+      if (numberOfPages <= 3) {
         basePagesCost = 250;
       } else if (numberOfPages <= 6) {
         basePagesCost = 350;
@@ -282,8 +387,8 @@ jQuery(document).ready(function ($) {
         summaryItems.push({ feature, price });
       });
 
-      // Total cost is the sum of base pages cost and features cost
-      let total = basePagesCost + featuresCost;
+      // Total cost is 0 if featuresCost is 0, otherwise it's the sum of base pages cost and features cost
+      let total = featuresCost === 0 || "" ? 0 : basePagesCost + featuresCost;
 
       // Convert to selected currency if not USD
       if (currency !== "USD") {
@@ -301,17 +406,19 @@ jQuery(document).ready(function ($) {
     }
   }
 
-
   // Update header based on current step
   function updateHeader() {
-    const header = $(".header");
+    const header = window.innerWidth < 768 ? $(".header").eq(0) : $(".header").eq(1);
 
     // Update the header content
-      if (window.innerWidth < 768) {
-          header.html(getStepHeader(currentStep));
-      } else {
-          header.html(getMobileStepHeader(currentStep));
-      }
+    if (window.innerWidth < 768) {
+      console.log(currentStep, 'mobile')
+      header.html(getStepHeader(currentStep));
+    } else {
+      console.log(currentStep, 'pc')
+
+      header.html(getPcStepHeader(currentStep));
+    }
     // Add GSAP animation to the header content, excluding the number 1 and 2
     const headerContent = header.find("*:not(.w-8, .h-8)");
     gsap.fromTo(
@@ -322,16 +429,16 @@ jQuery(document).ready(function ($) {
 
     // Update the progress bar
     const progressBar = header.find(".bg-yellowTheme:not(.w-8)");
-    
-    if (currentStep === 2 && prevStep == 1)progressBar.css("width", "0%");
-    
+
+    if (currentStep === 2 && prevStep == 1) progressBar.css("width", "0%");
     else if (currentStep === 3 && prevStep == 2) {
-        progressBar.css("width", "0%");
-        gsap.to(progressBar, {
-          width: "100%",
-          duration: 3,
-          ease: "power2.out",
-          onStart: () => progressBar.removeClass("bg-white").addClass("bg-yellowTheme"),
+      progressBar.css("width", "0%");
+      gsap.to(progressBar, {
+        width: "100%",
+        duration: 3,
+        ease: "power2.out",
+        onStart: () =>
+          progressBar.removeClass("bg-white").addClass("bg-yellowTheme"),
       });
     } else if (currentStep === 2 && prevStep === 3) {
       progressBar.css("width", "100%");
@@ -341,11 +448,16 @@ jQuery(document).ready(function ($) {
         duration: 3,
         ease: "power2.out",
         onStart: () => progressBar.removeClass("animate-slide-left"),
-        onComplete: () => progressBar.removeClass("bg-yellowTheme").addClass("bg-white"),
+        onComplete: () =>
+          progressBar.removeClass("bg-yellowTheme").addClass("bg-white"),
       });
     }
   }
 
 
 
+
+
+
+  
 });
