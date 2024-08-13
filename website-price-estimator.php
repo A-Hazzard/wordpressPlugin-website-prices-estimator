@@ -279,19 +279,19 @@ if (!class_exists('WebsitePriceEstimator')) {
       <section
         class="text-left relative hidden md:flex flex-row w-[90%] xl:w-[60%] my-8 mx-auto rounded-md shadow-lg overflow-hidden">
         <!-- LEFT SIDE -->
-        <div class="w-1/2 px-8 pt-8 flex flex-col bg-blueTheme relative">
-          <h2 class="text-white text-left text-3xl">
-            Take the first step towards your dream project
-          </h2>
-          <br />
-          <p class="text-left text-[#D3D3D3]">
-            Use our price estimator to get a project estimate tailored to your
-            needs. It's quick, easy, and free
-          </p>
+         <header class="w-1/2 px-8 pt-8 flex flex-col bg-blueTheme relative header">
+        <h2 class="text-white text-left text-3xl">
+          Take the first step towards your dream project.
+        </h2>
+        <br />
+        <p class="text-left text-[#D3D3D3]">
+          Use our price estimator to get a project estimate tailored to your
+          needs. It's quick, easy, and free.
+        </p>
 
-          <img src="<?php echo plugins_url('assets/images/staircase.svg', __FILE__); ?>" alt="staircase"
-            class="w-[60%] absolute bottom-0" />
-        </div>
+        <img src="<?php echo plugins_url('assets/images/staircase.svg', __FILE__); ?>" alt="staircase"
+          class="w-[60%] absolute bottom-0" />
+      </header>
 
         <!-- RIGHT SIDE -->
         <div class="step step-1 transition-height duration-300 ease-in-out">
@@ -542,7 +542,7 @@ if (!class_exists('WebsitePriceEstimator')) {
         }
       </style>
 
-      <script type="module" src="<?php echo plugins_url('assets/js/script.js', __FILE__); ?>"></script>
+      <script src="<?php echo plugins_url('assets/js/script.js', __FILE__); ?>"></script>
       <?php
       return ob_get_clean();
     }
